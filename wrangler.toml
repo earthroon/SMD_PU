@@ -1,0 +1,30 @@
+name = "smd-web"
+main = ".output/server/index.mjs"
+compatibility_date = "2026-10-12"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = false
+
+[assets]
+directory = ".output/public"
+binding = "ASSETS"
+
+[[services]]
+binding = "SMD_CORE"
+service = "smd-core"
+entrypoint = "PublicSurface"
+
+[observability]
+enabled = true
+
+[env.staging]
+name = "smd-web-staging"
+workers_dev = true
+
+[env.staging.assets]
+directory = ".output/public"
+binding = "ASSETS"
+
+[[env.staging.services]]
+binding = "SMD_CORE"
+service = "smd-core-staging"
+entrypoint = "PublicSurface"

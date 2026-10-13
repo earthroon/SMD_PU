@@ -1,0 +1,8 @@
+{
+  "schema": "SMD_CONTRACT_ARTIFACT_PIN_V1",
+  "name": "@smd/content-contracts",
+  "version": "0.1.0",
+  "tarball": "smd-content-contracts-0.1.0.tgz",
+  "sha256": "95286b4ce3b294976a029b6ff0d7950a8fd287c5a1cfb44a2cddfe12e20f2cc7",
+  "sourceDigest": "b86aaeb448bf1a8fca75db3d7c8bc63ceb408003f3692d5a65f11e206157be09"
+}
