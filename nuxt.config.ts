@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   modules: ['@pinia/nuxt'],
   postcss: { plugins: { tailwindcss: {}, autoprefixer: {} } },
   css: ['~/assets/css/main.css'],
-  nitro: { preset: 'cloudflare' },
+  nitro: { preset: 'cloudflare-module' },
   app: {
     head: {
       htmlAttrs: { lang: 'ko' },
