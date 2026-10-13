@@ -15,16 +15,3 @@ entrypoint = "PublicSurface"
 
 [observability]
 enabled = true
-
-[env.staging]
-name = "smd-web-staging"
-workers_dev = true
-
-[env.staging.assets]
-directory = ".output/public"
-binding = "ASSETS"
-
-[[env.staging.services]]
-binding = "SMD_CORE"
-service = "smd-core-staging"
-entrypoint = "PublicSurface"
