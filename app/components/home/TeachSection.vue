@@ -1,9 +1,27 @@
 <script setup lang="ts">
-const c=useSiteContent();
-const pages=computed(()=>c.value?.pages);
-import Reveal from '~/components/feature/Reveal.vue';
-import TeachGrid from '~/components/feature/TeachGrid.vue';
+import HomeFigmaText from './HomeFigmaText.vue';
+import HomeFigmaLine from './HomeFigmaLine.vue';
+import { homeCopyRefs } from '~/data/home-r2-composition';
+const copy=homeCopyRefs.training;
 </script>
 <template>
-  <section class="border-t border-background-200 py-16 md:py-24"><div class="container-x"><div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between"><Reveal><span class="eyebrow">{{ pages?.home.teachIntro.eyebrow }}</span><h2 class="mt-5 font-heading text-3xl font-semibold tracking-tight text-foreground-950 md:text-4xl">{{ pages?.home.teachIntro.heading }}</h2></Reveal><Reveal :delay="120"><p class="text-sm leading-relaxed text-foreground-600 md:text-right">{{ pages?.home.teachIntro.summaryLines[0] }}<br class="hidden md:block" /> {{ pages?.home.teachIntro.summaryLines[1] }}</p></Reveal></div><div class="mt-12"><TeachGrid /></div></div></section>
+  <section data-home-section="training-track" data-figma-node="node-1:93" class="smd-home-section smd-home--training-track">
+    <div class="smd-home__container">
+      <h2 class="text-center font-heading text-3xl font-semibold md:text-5xl"><HomeFigmaText :text-key="copy.title" /></h2>
+      <p class="mx-auto mt-5 max-w-3xl text-center text-base leading-relaxed text-foreground-700 md:text-lg"><HomeFigmaText :text-key="copy.description" /></p>
+      <div class="smd-home__training-facts">
+        <div v-for="fact in copy.facts" :key="fact.label" class="smd-home__training-fact">
+          <p class="text-sm text-foreground-600"><HomeFigmaText :text-key="fact.label" /></p>
+          <p class="smd-home__training-fact-value mt-2 whitespace-pre-line font-heading text-lg font-semibold"><HomeFigmaText :text-key="fact.value" /></p>
+        </div>
+      </div>
+      <div class="smd-home__training-tracks">
+        <div v-for="(part,index) in [copy.morning, copy.afternoon]" :key="part.label" class="smd-home__training-track">
+          <h3 class="font-heading text-2xl font-semibold"><HomeFigmaText :text-key="part.label" /></h3>
+          <HomeFigmaLine :line-key="index === 0 ? 'node-1:488' : 'node-1:496'" class="smd-home__track-line" />
+          <p class="text-lg text-foreground-700"><HomeFigmaText :text-key="part.work" /></p>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>

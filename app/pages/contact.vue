@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import CmsSlot from '~/components/cms/CmsSlot.vue';
 import PageHero from '~/components/feature/PageHero.vue';
 import Reveal from '~/components/feature/Reveal.vue';

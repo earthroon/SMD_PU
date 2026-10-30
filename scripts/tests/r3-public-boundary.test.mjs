@@ -18,7 +18,9 @@ test('public artifact pin verified before build',()=>{
   assert.ok(existsSync(resolve(root,'vendor/content-contracts/RELEASE.json')));
   const pin=JSON.parse(read('vendor/content-contracts/RELEASE.json'));
   assert.equal(pin.schema,'SMD_CONTRACT_ARTIFACT_PIN_V1');
-  assert.match(read('package.json'),/smd-content-contracts-0\.1\.0\.tgz/);
+  const pkg=JSON.parse(read('package.json'));
+  assert.equal(pkg.dependencies['@smd/content-contracts'],`file:./vendor/content-contracts/${pin.tarball}`);
+  assert.match(pin.sha256,/^[a-f0-9]{64}$/);
 });
 test('no public admin pages, BFF or privileged binding',()=>{
   assert.equal(existsSync(resolve(root,'app/pages/admin')),false);

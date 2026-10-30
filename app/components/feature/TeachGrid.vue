@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import Reveal from './Reveal.vue';
 const c=useSiteContent();
 </script>

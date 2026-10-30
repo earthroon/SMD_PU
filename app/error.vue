@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import type { NuxtError } from '#app';
-import type { PublicContent } from '@smd/content-contracts/contracts';
+import type { PublicContentV2 } from '@smd/content-contracts/contracts';
 import SiteHeader from '~/components/feature/SiteHeader.vue';
 import SiteFooter from '~/components/feature/SiteFooter.vue';
 
@@ -13,7 +14,7 @@ const effectiveStatus = ref(Number(props.error.statusCode) || 500);
 // No seed import and no production fixture fallback.
 if (effectiveStatus.value === 404 && !content.value) {
   try {
-    content.value = await $fetch<PublicContent>('/api/content');
+    content.value = await $fetch<PublicContentV2>('/api/content');
   } catch (failure: unknown) {
     const upstream = Number((failure as { statusCode?: number })?.statusCode);
     effectiveStatus.value = Number.isInteger(upstream) && upstream >= 500 && upstream <= 599
