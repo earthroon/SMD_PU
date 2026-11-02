@@ -1,0 +1,8 @@
+{
+  "contract": "SMD_HOME_INTERACTION_R1",
+  "url": "http://127.0.0.1:3000/",
+  "status": "BLOCKED",
+  "failure": "TypeError: Cannot read properties of undefined (reading 'ready')\n    at waitForDom (file:///D:/1111113232/TE-PU/smd-public%20(1)/smd-public/scripts/figma-r2/verify-home-intro-browser.mjs:64:15)\n    at async navigate (file:///D:/1111113232/TE-PU/smd-public%20(1)/smd-public/scripts/figma-r2/verify-home-intro-browser.mjs:95:3)\n    at async file:///D:/1111113232/TE-PU/smd-public%20(1)/smd-public/scripts/figma-r2/verify-home-intro-browser.mjs:123:5",
+  "originalFigmaPixelParity": "NOT_RUN",
+  "results": []
+}

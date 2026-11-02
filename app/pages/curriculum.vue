@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import CmsSlot from '~/components/cms/CmsSlot.vue';
 const c=useSiteContent();
 const pages=computed(()=>c.value?.pages);

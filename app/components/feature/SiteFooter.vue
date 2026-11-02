@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 const c=useSiteContent();
 const pages=computed(()=>c.value?.pages);
 const content = useSiteContent();

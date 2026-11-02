@@ -1,124 +1,109 @@
 <script setup lang="ts">
+import { useSiteContent } from '~/composables/useSiteContent';
+import { HOME_HEADER_BRAND_R1, assertHomeHeaderBrandR1 } from '~/data/home-r2-brand-display';
+import { homeHeaderNavigationV2, assertHomeHeaderNavigationV2, validPublishedKakaoUrl } from '~/data/home-r2-navigation';
+
+assertHomeHeaderNavigationV2();
+assertHomeHeaderBrandR1();
 const content = useSiteContent();
 const route = useRoute();
 const scrolled = ref(false);
 const open = ref(false);
-const nav = computed(() => [
-  ...(content.value?.navigation.leftNav ?? []),
-  ...(content.value?.navigation.rightNav ?? []),
-]);
-const isActive = (to: string) => route.path === to;
+const toggle = ref<HTMLButtonElement | null>(null);
+const nav = homeHeaderNavigationV2.items; // Same owner for both desktop and compact navigation.
 
-// The mobile drawer owns only the overflow lock it acquired.
-let bodyOverflowBeforeDrawer: string | null = null;
+const active = (to: string) => route.path === to;
+const ctaHref = computed(() => validPublishedKakaoUrl(content.value?.navigation.kakaoUrl));
+const brand = HOME_HEADER_BRAND_R1.displayText;
+
+let oldBodyOverflow: string | null = null;
 function releaseDrawerLock() {
-  if (bodyOverflowBeforeDrawer === null || !import.meta.client) return;
-  document.body.style.overflow = bodyOverflowBeforeDrawer;
-  bodyOverflowBeforeDrawer = null;
+  if (!import.meta.client || oldBodyOverflow === null) return;
+  document.body.style.overflow = oldBodyOverflow;
+  oldBodyOverflow = null;
 }
 function setDrawerLock(enabled: boolean) {
   if (!import.meta.client) return;
   if (enabled) {
-    if (bodyOverflowBeforeDrawer === null) {
-      bodyOverflowBeforeDrawer = document.body.style.overflow;
+    if (oldBodyOverflow === null) {
+      oldBodyOverflow = document.body.style.overflow;
       document.body.style.overflow = 'hidden';
     }
-    return;
-  }
-  releaseDrawerLock();
+  } else releaseDrawerLock();
 }
-function onScroll() {
-  scrolled.value = window.scrollY > 16;
+function closeDrawer(restoreFocus = false) {
+  open.value = false;
+  if (restoreFocus && import.meta.client) nextTick(() => toggle.value?.focus());
 }
+function onKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && open.value) closeDrawer(true);
+}
+function onScroll() { scrolled.value = window.scrollY > 16; }
 watch(open, setDrawerLock, { flush: 'sync' });
-watch(() => route.path, () => { open.value = false; });
+watch(() => route.path, () => closeDrawer());
 onMounted(() => {
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('keydown', onKeydown);
 });
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll);
+  window.removeEventListener('keydown', onKeydown);
   releaseDrawerLock();
 });
+const figmaLogoError = ref(false);
 </script>
-
 <template>
-  <header :class="[
-    'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-    scrolled || open
-      ? 'border-b border-background-200 bg-background-50/95 backdrop-blur-md'
-      : 'border-b border-transparent bg-background-50/70 backdrop-blur-sm',
-  ]">
-    <div class="w-full px-5 md:px-8">
-      <div class="grid h-16 grid-cols-[1fr_auto_1fr] items-center md:h-20">
-        <div class="flex items-center gap-6">
-          <button
-            type="button"
-            class="grid h-9 w-9 place-items-center rounded-md text-foreground-950 transition-colors hover:bg-background-100 lg:hidden"
-            :aria-expanded="open"
-            aria-label="메뉴 열기"
-            @click="open = !open"
-          >
-            <i :class="['text-xl', open ? 'ri-close-line' : 'ri-menu-line']"></i>
-          </button>
-          <nav class="hidden items-center gap-7 lg:flex">
-            <NuxtLink
-              v-for="item in content?.navigation.leftNav"
-              :key="item.to"
-              :to="item.to"
-              :class="[
-                'whitespace-nowrap text-sm font-label transition-colors duration-300 hover:text-primary-600',
-                isActive(item.to) ? 'text-primary-600' : 'text-foreground-800',
-              ]"
-            >{{ item.label }}</NuxtLink>
-          </nav>
-        </div>
+  <header
+    :class="['smd-site-header', { 'smd-site-header--scrolled': scrolled || open }]"
+    data-header-contract="SMD_HOME_HEADER_NAV_V2"
+    data-figma-node="node-1:6"
+  >
+    <div class="smd-site-header__inner">
+      <NuxtLink to="/" class="smd-site-header__brand" :aria-label="`${brand} 홈으로`" @click="closeDrawer()">
+        <span class="smd-site-header__symbol">
+          <img v-if="!figmaLogoError"
+            src="/figma/smd-academy-header-logo.svg"
+            class="smd-site-header__figma-logo"
+            width="80" height="80" alt="" aria-hidden="true" decoding="async"
+            @error="figmaLogoError = true" />
+          <span v-else class="smd-site-header__logo-error" role="status">로고 오류</span>
+        </span>
+        <span class="smd-site-header__brand-label">{{ brand }}</span>
+      </NuxtLink>
 
-        <div class="justify-self-center">
-          <NuxtLink to="/" class="flex items-center gap-2.5 cursor-pointer" aria-label="SMD 아카데미 홈으로">
-            <span class="grid h-8 w-8 place-items-center rounded-md bg-foreground-950 font-heading text-sm font-semibold text-background-50">S</span>
-            <span class="font-heading text-[15px] font-semibold tracking-[0.02em] text-foreground-950">SMD ACADEMY</span>
-          </NuxtLink>
-        </div>
-
-        <div class="flex items-center justify-end gap-6">
-          <nav class="hidden items-center gap-7 lg:flex">
-            <NuxtLink
-              v-for="item in content?.navigation.rightNav"
-              :key="item.to"
-              :to="item.to"
-              :class="[
-                'whitespace-nowrap text-sm font-label transition-colors duration-300 hover:text-primary-600',
-                isActive(item.to) ? 'text-primary-600' : 'text-foreground-800',
-              ]"
-            >{{ item.label }}</NuxtLink>
-          </nav>
-          <a :href="content?.navigation.kakaoUrl" target="_blank" rel="noopener noreferrer" class="btn-primary">상담 신청</a>
-        </div>
-      </div>
-    </div>
-
-    <div :class="[
-      'overflow-hidden border-t border-background-200 bg-background-50 transition-[max-height] duration-500 lg:hidden',
-      open ? 'max-h-[420px]' : 'max-h-0 border-t-transparent',
-    ]">
-      <nav class="flex flex-col px-5 py-3">
+      <nav class="smd-site-header__desktop-nav" aria-label="주 메뉴">
         <NuxtLink
-          v-for="item in nav"
-          :key="item.to"
-          :to="item.to"
-          :class="[
-            'border-b border-background-200/70 py-3.5 text-sm font-label transition-colors hover:text-primary-600',
-            isActive(item.to) ? 'text-primary-600' : 'text-foreground-800',
-          ]"
+          v-for="item in nav" :key="item.id" :to="item.to"
+          :data-header-item="item.id" :data-figma-node="item.sourceNodeKey"
+          :aria-current="active(item.to) ? 'page' : undefined"
+          class="smd-site-header__nav-link"
         >{{ item.label }}</NuxtLink>
-        <a
-          :href="content?.navigation.kakaoUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="mt-4 inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md bg-primary-500 px-4 py-2.5 font-label text-sm text-background-50"
-        >카카오톡 상담 신청</a>
+      </nav>
+
+      <a v-if="ctaHref" :href="ctaHref" target="_blank" rel="noopener noreferrer"
+        class="smd-site-header__cta smd-site-header__desktop-cta" data-figma-node="node-1:19"
+      >{{ homeHeaderNavigationV2.cta.label }}</a>
+      <span v-else class="smd-site-header__cta-unavailable smd-site-header__desktop-cta" role="status">상담 연결 불가</span>
+
+      <button ref="toggle" type="button" class="smd-site-header__toggle"
+        :aria-expanded="open" aria-controls="smd-header-menu-drawer"
+        :aria-label="open ? '메뉴 닫기' : '메뉴 열기'"
+        @click="open ? closeDrawer(true) : (open = true)"
+      ><i :class="['text-2xl', open ? 'ri-close-line' : 'ri-menu-line']" aria-hidden="true" /></button>
+    </div>
+    <div id="smd-header-menu-drawer" class="smd-site-header__drawer" :class="{ 'smd-site-header__drawer--open': open }" :inert="!open">
+      <nav class="smd-site-header__drawer-nav" aria-label="모바일 메뉴">
+        <NuxtLink v-for="item in nav" :key="item.id" :to="item.to"
+          class="smd-site-header__drawer-link" :aria-current="active(item.to) ? 'page' : undefined"
+          :data-header-item="item.id" @click="closeDrawer()"
+        >{{ item.label }}</NuxtLink>
+        <a v-if="ctaHref" :href="ctaHref" target="_blank" rel="noopener noreferrer"
+          class="smd-site-header__drawer-cta" @click="closeDrawer()"
+        >{{ homeHeaderNavigationV2.cta.label }}</a>
+        <p v-else class="smd-site-header__drawer-unavailable" role="status">상담 연결을 사용할 수 없습니다.</p>
       </nav>
     </div>
   </header>
 </template>
+<style src="~/assets/css/home-r2-header.css"></style>

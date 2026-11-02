@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 withDefaults(defineProps<{ title: string; to?: string; linkLabel?: string; external?: boolean }>(), {
   to: '/contact',
   linkLabel: '바로가기',

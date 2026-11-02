@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSelectedCategoryPage} from '~/composables/useSelectedCategoryPage';
 import ArchiveCategoryPage from '~/components/pages/ArchiveCategoryPage.vue';
 import CategoryStandardPage from '~/components/pages/CategoryStandardPage.vue';
 import {LEGACY_CANONICAL_PATHS} from '@smd/content-contracts/category-page-contracts';

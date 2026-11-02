@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import TurnstileWidget from './TurnstileWidget.vue';
 const config=useRuntimeConfig();
 const sitekey=String(config.public.turnstileSiteKey||'');

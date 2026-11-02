@@ -2,7 +2,8 @@ import type { H3Event } from 'h3';
 /** PublicSurface is an explicit capability, not an unrestricted Core proxy. */
 type PublicBinding = { fetch(request: Request): Promise<Response> };
 const publicPaths:Readonly<Record<string,readonly RegExp[]>>={
-  GET:[/^\/v3\/render$/, /^\/v3\/sitemap$/, /^\/v1\/content$/, /^\/v2\/content$/],
+  GET:[/^\/v6\/render$/, /^\/v6\/media\/home-r2\/sm_[a-f0-9]{64}$/, /^\/v5\/render$/, /^\/v5\/media\/image\/sm_[a-f0-9]{64}$/, /^\/v5\/media\/brand\/sb_[a-f0-9]{64}$/, /^\/v5\/brand\/current$/, /^\/v4\/render$/, /^\/v4\/archive\/media\/[a-f0-9]{64}\.(?:png|webp|jpe?g)$/, /^\/v3\/render$/, /^\/v3\/sitemap$/, /^\/v1\/content$/, /^\/v2\/content$/],
+  HEAD:[/^\/v6\/media\/home-r2\/sm_[a-f0-9]{64}$/, /^\/v5\/media\/image\/sm_[a-f0-9]{64}$/, /^\/v5\/media\/brand\/sb_[a-f0-9]{64}$/],
   POST:[/^\/v1\/bot\/ask$/, /^\/v1\/inquiries$/, /^\/v1\/hooks\/ask$/]
 };
 function binding(event:H3Event):PublicBinding {
@@ -72,4 +73,16 @@ export async function webhookRequest<T>(event:H3Event):Promise<T>{
 export async function coreResponse(event:H3Event,path:string):Promise<Response>{
   const request=new Request(coreURL(path,'GET'),{method:'GET',headers:publicHeaders(event,false)});
   return binding(event).fetch(request);
+}
+
+/** SiteMedia bytes: exact allowlisted GET/HEAD, never JSON, never Admin credentials. */
+export async function coreMediaResponse(event:H3Event,path:string,method:'GET'|'HEAD'):Promise<Response>{
+  if(!(/^\/v6\/media\/home-r2\/sm_[a-f0-9]{64}$/.test(path)||
+      /^\/v5\/media\/image\/sm_[a-f0-9]{64}$/.test(path)||
+      /^\/v5\/media\/brand\/sb_[a-f0-9]{64}$/.test(path)))
+    throw createError({statusCode:403,statusMessage:'PUBLIC_MEDIA_ROUTE_NOT_ADMITTED'});
+  const headers=new Headers({accept:path.includes('/brand/')?'image/svg+xml':'image/png, image/jpeg, image/webp'});
+  const etag=getHeader(event,'if-none-match');
+  if(etag && etag.length<=256)headers.set('if-none-match',etag);
+  return binding(event).fetch(new Request(coreURL(path,method),{method,headers}));
 }

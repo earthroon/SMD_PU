@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {useSiteContent} from '~/composables/useSiteContent';
 import type {PublicRenderedPageV3} from '@smd/content-contracts/contracts';
 import PageHero from '~/components/feature/PageHero.vue';
 import CtaBand from '~/components/feature/CtaBand.vue';

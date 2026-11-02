@@ -28,6 +28,9 @@ export default {
         display: ["var(--font-heading)"],
         label: ["var(--font-label)"],
       },
+      lineHeight: {
+        relaxed: "var(--type-body-leading)",
+      },
       maxWidth: {
         content: "1280px",
       },

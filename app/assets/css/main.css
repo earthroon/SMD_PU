@@ -1,13 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+/* Pretendard Variable is loaded via Nuxt head. */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-heading: 'IBM Plex Sans KR', 'Noto Sans KR', sans-serif;
-  --font-body: 'Noto Sans KR', 'IBM Plex Sans KR', sans-serif;
-  --font-label: 'IBM Plex Sans KR', 'Noto Sans KR', sans-serif;
+  --font-ui: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-heading: var(--font-ui);
+  --font-body: var(--font-ui);
+  --font-label: var(--font-ui);
+
+  --type-title-leading: 1.22;
+  --type-subtitle-leading: 1.45;
+  --type-body-leading: 1.7;
 
   /* background — neutral white */
   --background-50: 1 0 0;
@@ -110,6 +115,9 @@
   body {
     @apply bg-background-50 text-foreground-950;
     font-family: var(--font-body);
+    font-weight: 400;
+    line-height: var(--type-body-leading);
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5 {
@@ -123,12 +131,36 @@
 }
 
 @layer components {
+  /* Title: Pretendard Bold */
+  :is(h1, h2).font-heading {
+    font-weight: 700;
+    line-height: var(--type-title-leading);
+    letter-spacing: -0.025em;
+  }
+
+  /* Subtitle: Pretendard SemiBold */
+  :is(h3, h4, h5, h6).font-heading {
+    font-weight: 600;
+    line-height: var(--type-subtitle-leading);
+    letter-spacing: -0.015em;
+  }
+
+  .font-heading.font-medium {
+    font-weight: 600;
+  }
+
+  /* Navigation and button labels */
+  .font-label {
+    font-weight: 500;
+  }
+
   .container-x {
     @apply mx-auto w-full max-w-content px-5 md:px-8;
   }
 
   .eyebrow {
-    @apply inline-block text-[11px] font-label uppercase tracking-[0.28em] text-primary-600;
+    @apply inline-block text-[11px] font-label font-semibold uppercase tracking-[0.18em] text-primary-600;
+    line-height: var(--type-subtitle-leading);
   }
 
   .link-arrow {

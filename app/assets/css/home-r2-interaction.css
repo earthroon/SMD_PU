@@ -1,0 +1,41 @@
+/* SMD_HOME_INTERACTION_R1. Presentation wrappers only. Header and Figma source untouched.
+   The desktop hero begins at document y=0 under the existing fixed Header.
+   A full-viewport hero slot, not viewport minus Header, keeps the info bar below fold. */
+@media (min-width:1380px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .smd-home-intro {
+    position: relative;
+    overflow: visible;
+    isolation: isolate;
+  }
+  .smd-home-intro > .smd-figma-scene-section--hero {
+    min-height: 100svh;
+    position: sticky;
+    top: 0;
+    z-index: 0;
+  }
+  .smd-home-intro > .smd-figma-scene-section--info-bar {
+    position: relative;
+    z-index: 1;
+    opacity: var(--smd-intro-bar-opacity, 1);
+    transform: translate3d(0, var(--smd-intro-bar-y, 0px), 0);
+  }
+  .smd-home-intro .smd-home-intro__item {
+    will-change: opacity, transform;
+  }
+  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="0"] {
+    opacity: var(--smd-intro-icon-0-opacity, 1);
+    transform: translateY(var(--smd-intro-icon-0-y, 0px));
+  }
+  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="1"] {
+    opacity: var(--smd-intro-icon-1-opacity, 1);
+    transform: translateY(var(--smd-intro-icon-1-y, 0px));
+  }
+  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="2"] {
+    opacity: var(--smd-intro-icon-2-opacity, 1);
+    transform: translateY(var(--smd-intro-icon-2-y, 0px));
+  }
+  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="3"] {
+    opacity: var(--smd-intro-icon-3-opacity, 1);
+    transform: translateY(var(--smd-intro-icon-3-y, 0px));
+  }
+}
