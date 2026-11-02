@@ -141,7 +141,11 @@ try{
     await wheel(w,h);await sleep(510);
     const beforeSkip=await measure();
     if(beforeSkip.phase!=='revealing')errors.push(`BEFORE_SKIP_${beforeSkip.phase}`);
+<<<<<<< HEAD
     await wheel(w,h);
+=======
+    await wheel(w,h);await sleep(70);await wheel(w,h);
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     await sleep(180);
     const skipped=await measure();
     if(skipped.phase!=='skipped'||skipped.outcome!=='skipped')errors.push('SKIP_NOT_TERMINAL');

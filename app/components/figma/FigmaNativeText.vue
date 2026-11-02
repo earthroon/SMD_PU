@@ -2,6 +2,10 @@
 import {figmaScene} from '~/data/figma-r2-scene.generated';
 import {r3MethodsTextOverride} from '~/data/figma-r2-visual-r3';
 import {homeVisibleBrandText} from '~/utils/homeBrandVisibleText';
+<<<<<<< HEAD
+=======
+import {isHomeSpecialEmphasisRun, presentHomeSpecialPointRuns} from '~/utils/homeSpecialPointPresentation';
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 import {
   deriveFigmaTextPaintWindow, ZERO_FIGMA_TEXT_GROWTH,
   type FigmaTextPaintGrowth,
@@ -11,12 +15,23 @@ const props = defineProps<{nodeKey:string; width:number;height:number}>();
 const original = computed(() => figmaScene.texts[props.nodeKey]);
 const visual = computed(() => r3MethodsTextOverride(props.nodeKey));
 // Explicit presentation layer; original UTF-16 runs, digests and Scene geometry stay immutable.
+<<<<<<< HEAD
 const visibleRuns = computed(() => (original.value?.runs ?? []).map(run => {
   const sized = visual.value ? {...run,style:{...run.style,
     fontSize:`${visual.value.fontSize}px`,letterSpacing:`${visual.value.letterSpacing}px`}} : run;
   const displayed = homeVisibleBrandText(props.nodeKey, run.characters);
   return displayed === run.characters ? sized : {...sized, characters: displayed};
 }));
+=======
+const visibleRuns = computed(() => presentHomeSpecialPointRuns(props.nodeKey,
+  (original.value?.runs ?? []).map(run => {
+    const sized = visual.value ? {...run,style:{...run.style,
+      fontSize:`${visual.value.fontSize}px`,letterSpacing:`${visual.value.letterSpacing}px`}} : run;
+    const displayed = homeVisibleBrandText(props.nodeKey, run.characters);
+    return displayed === run.characters ? sized : {...sized, characters: displayed};
+  }),
+));
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 const growth = ref<FigmaTextPaintGrowth>(ZERO_FIGMA_TEXT_GROWTH);
 const paint = computed(() => deriveFigmaTextPaintWindow(
   props.width, props.height, visibleRuns.value, growth.value,
@@ -122,7 +137,8 @@ onUnmounted(() => {
     :data-display-font-size="visual?.fontSize">
     <div xmlns="http://www.w3.org/1999/xhtml" :style="paintStyle" class="smd-figma-native-text">
       <div ref="runsRoot" class="smd-figma-native-text__runs"><span v-for="(run,i) in visibleRuns" :key="i"
-        :data-utf16-start="run.start" :data-utf16-end="run.end" :style="run.style">{{run.characters}}</span></div>
+        :data-utf16-start="run.start" :data-utf16-end="run.end" :style="run.style"
+        :data-special-emphasis="isHomeSpecialEmphasisRun(nodeKey, i) ? 'true' : undefined">{{run.characters}}</span></div>
     </div>
   </foreignObject>
 </template>

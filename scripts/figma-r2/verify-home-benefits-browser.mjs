@@ -241,7 +241,11 @@ try{
     await sleep(430); // card reveal in progress
     const mid=await measure();
     check(errors,mid.phase==='revealing','SKIP_PRECONDITION_NOT_REVEALING');
+<<<<<<< HEAD
     await wheel(w,h);await sleep(230);
+=======
+    await wheel(w,h);await sleep(70);await wheel(w,h);await sleep(230);
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const skipped=await measure();
     check(errors,skipped.phase==='skipped'&&skipped.reason==='WHEEL_DOWN','BENEFITS_SKIP_NOT_TERMINAL');
     check(errors,skipped.skips===1,'BENEFITS_SKIP_COUNT');
@@ -254,14 +258,22 @@ try{
     console.log(`SMD_BENEFITS SKIP ${errors.length?'FAIL '+errors.join(','):'BROWSER_OK'}`);
   }
 
+<<<<<<< HEAD
   { // Training's down-skip already lands at Benefits, one event, one reveal.
+=======
+  { // Training's confirmed down-skip lands at Benefits once; one handoff, one reveal.
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const w=1920,h=1080,errors=[];
     await navigate(w,h,false);
     await throughSpecial(w,h);
     await wheel(w,h);
     await awaitPhase('TRAINING_SKIP_READY','trainingPhase','revealing',2300);
     await sleep(180);
+<<<<<<< HEAD
     await wheel(w,h);await sleep(230);
+=======
+    await wheel(w,h);await sleep(70);await wheel(w,h);await sleep(230);
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const handoff=await measure();
     check(errors,handoff.trainingPhase==='skipped'&&handoff.trainingReason==='WHEEL_DOWN','TRAINING_NOT_SKIPPED_DOWN');
     check(errors,handoff.phase==='revealing'&&handoff.starts===1,'BENEFITS_HANDOFF_NOT_REVEALING');

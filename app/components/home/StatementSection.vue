@@ -57,5 +57,9 @@ const copy=homeCopyRefs.specialStart;
     word-break: keep-all;
     overflow-wrap: break-word;
   }
+  .smd-home__special-point-body-r2
+    :deep(.smd-home-figma-text > span[data-special-emphasis="true"]) {
+    font-weight: 700 !important;
+  }
 }
 </style>

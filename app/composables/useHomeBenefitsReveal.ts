@@ -1,5 +1,9 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue';
 import { HOME_INTRO_DESKTOP_MEDIA } from '~/utils/homeIntroTimeline';
+<<<<<<< HEAD
+=======
+import { createHomeWheelSkipGate } from '~/utils/homeWheelSkipGate';
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 import {
   HOME_BENEFITS_COMPLETE_MS,
   HOME_BENEFITS_TARGETS,
@@ -29,6 +33,10 @@ export function useHomeBenefitsReveal(
   const starts = ref(0);
   const skips = ref(0);
   const skipReason = ref<string | null>(null);
+<<<<<<< HEAD
+=======
+  const wheelSkipGate = createHomeWheelSkipGate();
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 
   let mounted = false;
   let media: MediaQueryList | null = null;
@@ -269,12 +277,20 @@ export function useHomeBenefitsReveal(
         const silence = now - lastWheelAt;
         lastWheelAt = now;
         extraDownPx += Math.max(0, deltaPx);
+<<<<<<< HEAD
         const intent = benefitsSkipIntent({
+=======
+        const requestedIntent = benefitsSkipIntent({
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
           deltaPx,
           elapsedSinceEntryMs: now - firstWheelAt,
           silenceSinceLastWheelMs: silence,
           cumulativeFollowUpDownPx: extraDownPx,
         });
+<<<<<<< HEAD
+=======
+        const intent = wheelSkipGate.observe(now, deltaPx, requestedIntent);
+>>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
         switch (intent) {
           case 'skip-up':
             // Let the current upward event remain native after retiring ownership.
