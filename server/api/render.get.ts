@@ -1,5 +1,5 @@
 import type {RenderResponseV6Candidate} from '../../app/utils/homeR2ScaffoldAdmission';
-import {coreBindingAvailable,coreResponse} from '../utils/public-core';
+import {coreResponse} from '../utils/public-core';
 import {validateRenderEnvelopeV5} from '../utils/render';
 import type {RenderResponseV3} from '@smd/content-contracts/contracts';
 import type {RenderResponseV4,RenderResponseV5} from '@smd/content-contracts/contracts';
@@ -16,9 +16,9 @@ export default defineEventHandler(async(event):Promise<RenderResponseV3|RenderRe
     fail(400,'CATEGORY_PATH_INVALID');
   if(requested==='/admin'||requested.startsWith('/admin/'))fail(404,'PUBLIC_ADMIN_ROUTE_NOT_FOUND');
   setHeader(event,'cache-control','no-store');
-  // Local dev fixtures are only for the original seven static routes.
-  // When a Core binding exists, even dev always uses the real publication.
-  if(import.meta.dev && process.env.SMD_DEV_FIXTURE_ONLY==='1' && !coreBindingAvailable(event)){
+  // EXPLICIT local preview only: DEV fixture overrides even a configured Core binding.
+  // No automatic fallback and no production fixture: both dev mode and the flag are required.
+  if(import.meta.dev && process.env.SMD_DEV_FIXTURE_ONLY==='1'){
     const matched=LEGACY_PAGE_IDS.find(k=>LEGACY_CANONICAL_PATHS[k]===requested);
     if(matched){
       setHeader(event,'x-content-authority','DEV_FIXTURE_ONLY');
