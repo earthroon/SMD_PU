@@ -14,15 +14,15 @@ const info=['node-1:155','node-1:401','node-1:405','node-18:59'];
 test('brand display override is isolated from immutable JSONL and preserves Figma source',()=>{
  assertHomeHeaderBrandR1();
  assert.equal(HOME_HEADER_BRAND_R1.displayText,'SMD아카데미');
- assert.equal(HOME_HEADER_BRAND_R1.fontWeight,600);
+ assert.equal(HOME_HEADER_BRAND_R1.fontWeight,700);
  assert.equal(figmaScene.texts['node-1:11'].characters,'SMD 아카데미');
  assert.match(read('app/components/feature/SiteHeader.vue'),/const brand = HOME_HEADER_BRAND_R1\.displayText/);
  assert.match(read('app/data/home-r2-navigation.ts'),/assertHomeHeaderBrandR1/);
 });
-test('Pretendard Semibold header is not forced into a 1.1 line box',()=>{
+test('Pretendard Bold header is not forced into a 1.1 line box',()=>{
  const css=read('app/assets/css/home-r2-header.css');
  const m=css.match(/\.smd-site-header__brand-label\s*\{([^}]+)\}/);
- assert.ok(m);assert.match(m[1],/font-weight:\s*600/);
+ assert.ok(m);assert.match(m[1],/font-weight:\s*700/);
  assert.match(m[1],/line-height:\s*1\.35/);
  assert.match(m[1],/font-family:\s*var\(--font-ui\)/);
 });

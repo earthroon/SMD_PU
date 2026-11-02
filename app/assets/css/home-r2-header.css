@@ -42,7 +42,7 @@
 
 .smd-site-header__brand-label {
   display: block; flex: 0 0 auto; min-width: max-content; white-space: nowrap;
-  overflow: visible; font-family: var(--font-ui); font-size: 20px; font-weight: 600;
+  overflow: visible; font-family: var(--font-ui); font-size: 20px; font-weight: 700;
   letter-spacing: -.008em; line-height: 1.35;
 }
 .smd-site-header__desktop-nav {display: flex; align-items: center; justify-content: flex-end; gap: clamp(18px, 1.7vw, 32px); margin-left: auto; min-width: 0;}

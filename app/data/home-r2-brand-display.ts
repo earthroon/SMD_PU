@@ -7,7 +7,7 @@ export const HOME_HEADER_BRAND_R1 = {
   sourceNodeKey: 'node-1:11',
   sourceText: 'SMD 아카데미',
   displayText: 'SMD아카데미',
-  fontWeight: 600,
+  fontWeight: 700,
 } as const;
 
 export function assertHomeHeaderBrandR1(): void {
@@ -17,7 +17,7 @@ export function assertHomeHeaderBrandR1(): void {
       value.provenance !== 'USER_APPROVED_COPY_OVERRIDE_V1' ||
       homeFigmaText[value.sourceNodeKey].characters !== value.sourceText ||
       value.displayText !== 'SMD아카데미' ||
-      value.fontWeight !== 600) {
+      value.fontWeight !== 700) {
     throw new Error('SMD_HOME_R2_HEADER_DISPLAY_CONTRACT_INVALID');
   }
 }

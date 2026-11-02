@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {figmaScene} from '~/data/figma-r2-scene.generated';
 import {r3MethodsTextOverride} from '~/data/figma-r2-visual-r3';
+import {homeVisibleBrandText} from '~/utils/homeBrandVisibleText';
 import {
   deriveFigmaTextPaintWindow, ZERO_FIGMA_TEXT_GROWTH,
   type FigmaTextPaintGrowth,
@@ -10,9 +11,12 @@ const props = defineProps<{nodeKey:string; width:number;height:number}>();
 const original = computed(() => figmaScene.texts[props.nodeKey]);
 const visual = computed(() => r3MethodsTextOverride(props.nodeKey));
 // Explicit presentation layer; original UTF-16 runs, digests and Scene geometry stay immutable.
-const visibleRuns = computed(() => (original.value?.runs ?? []).map(run =>
-  visual.value ? {...run,style:{...run.style,
-    fontSize:`${visual.value.fontSize}px`,letterSpacing:`${visual.value.letterSpacing}px`}} : run));
+const visibleRuns = computed(() => (original.value?.runs ?? []).map(run => {
+  const sized = visual.value ? {...run,style:{...run.style,
+    fontSize:`${visual.value.fontSize}px`,letterSpacing:`${visual.value.letterSpacing}px`}} : run;
+  const displayed = homeVisibleBrandText(props.nodeKey, run.characters);
+  return displayed === run.characters ? sized : {...sized, characters: displayed};
+}));
 const growth = ref<FigmaTextPaintGrowth>(ZERO_FIGMA_TEXT_GROWTH);
 const paint = computed(() => deriveFigmaTextPaintWindow(
   props.width, props.height, visibleRuns.value, growth.value,

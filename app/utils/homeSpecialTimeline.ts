@@ -39,7 +39,9 @@ export function specialItemIndex(nodeKey: string): number | null {
 export function specialItemStartMs(index: number): number {
   switch (index) {
     case 0: return 0;
-    case 1: case 2: case 3: return HOME_SPECIAL_TIMING.cardStartMs[index - 1];
+    case 1: return HOME_SPECIAL_TIMING.cardStartMs[0];
+    case 2: return HOME_SPECIAL_TIMING.cardStartMs[1];
+    case 3: return HOME_SPECIAL_TIMING.cardStartMs[2];
     default: throw new RangeError('SMD_SPECIAL_ITEM_INDEX_INVALID');
   }
 }

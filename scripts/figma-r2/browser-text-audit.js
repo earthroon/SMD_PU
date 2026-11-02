@@ -25,7 +25,7 @@ void (async () => {
     rect.bottom <= region.bottom + tolerance
   );
   const brandPass = Boolean(brand && brand.textContent === 'SMD아카데미' &&
-    brandStyle?.fontWeight === '600' && brandRect && brandGlyph &&
+    brandStyle?.fontWeight === '700' && brandRect && brandGlyph &&
     inside(brandGlyph, brandRect));
   const semantic = document.querySelector('.smd-home--semantic-reflow');
   const semanticVisible = Boolean(semantic && getComputedStyle(semantic).display !== 'none');
