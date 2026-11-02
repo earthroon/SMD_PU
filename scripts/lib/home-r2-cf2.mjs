@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import assert from 'node:assert/strict';
 import { buildSourceFreeze, verifyUntouchedFiles } from './home-r2-source.mjs';
-import { M5_TYPEFIX_AUTHORIZED_DIGESTS } from './home-r2-m5-typefix-authority.mjs';
+import { TEXT_HEADER_AUTHORIZED_DIGESTS } from './home-r2-text-header-authority.mjs';
 
 const bodyOrder=['hero','info-bar','special-start','training-track','benefits','methods','location','faq','consultation-cta'];
 const components=['HeroSection','HomeInfoBar','StatementSection','TeachSection','HomeBenefits','HomeMethods','HomeLocation','HomeFaq','HomeConsultationCta'];
@@ -78,7 +78,7 @@ export function verifyHomeComposition(root){
   assert.doesNotMatch(cta,/https:\/\/open\.kakao\.com\/o\//);
   const homeEntries=sections.slice(1,-1);
   assert.deepEqual(homeEntries.map(x=>x.id),bodyOrder);
-  verifyUntouchedFiles(root,M5_TYPEFIX_AUTHORIZED_DIGESTS);
+  verifyUntouchedFiles(root,TEXT_HEADER_AUTHORIZED_DIGESTS);
   return {contract:'SMD-HOME-R2-CF2',sourceSnapshotDigest:sourceIdentity.sourceSnapshotDigest,
     expectedBodySections:9,actualBodySections:homeEntries.length,homeTextSourceCount:texts.length,
     exposedOrPendingTextCount:refs.length,unboundMediaSlotCount:slotNames.length,duplicateHeaderFooterCount:0,

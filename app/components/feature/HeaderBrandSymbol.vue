@@ -2,6 +2,7 @@
 /** Header icon consumes the V5 publication. /privacy has no page render envelope. */
 import {useSiteContent} from '~/composables/useSiteContent';
 import {resolvePublishedBrandSymbol} from '~/utils/site-media-binding';
+import FigmaBrandMark from '~/components/figma/FigmaBrandMark.vue';
 const content=useSiteContent();
 const route=useRoute();
 type PrivacyBrand={schema:'SMD_BRAND_CURRENT_V1';kind:'legacy'|'published-svg';
@@ -33,14 +34,15 @@ watch(()=>brandSymbol.value.kind==='published-svg'?brandSymbol.value.assetId:nul
   id=>{if(id!==failedBrandId.value)failedBrandId.value=null;});
 </script>
 <template>
-  <img v-if="brandSymbol.kind==='published-svg' && failedBrandId!==brandSymbol.assetId"
+  <FigmaBrandMark v-if="route.path === '/'" />
+  <img v-else-if="brandSymbol.kind==='published-svg' && failedBrandId!==brandSymbol.assetId"
     :src="brandSymbol.src" :width="brandSymbol.width" :height="brandSymbol.height"
-    class="block h-8 w-8 shrink-0 object-contain" alt="" decoding="async"
+    class="block shrink-0 object-contain" alt="" decoding="async"
     @error="failedBrandId=brandSymbol.assetId" />
   <span v-else-if="brandSymbol.kind==='legacy'"
-    class="grid h-8 w-8 place-items-center rounded-md bg-foreground-950 font-heading text-sm font-semibold text-background-50">S</span>
+    class="grid place-items-center rounded-md bg-foreground-950 font-heading text-sm font-semibold text-background-50">S</span>
   <span v-else-if="brandSymbol.kind==='invalid' || failedBrandId"
-    class="grid h-8 min-w-8 place-items-center text-[9px] text-red-700" role="status"
+    class="grid place-items-center text-[9px] text-red-700" role="status"
     title="발행된 브랜드 SVG를 불러오지 못했습니다">로고 오류</span>
-  <span v-else class="block h-8 w-8 shrink-0" aria-hidden="true"></span>
+  <span v-else class="block shrink-0" aria-hidden="true"></span>
 </template>

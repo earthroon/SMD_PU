@@ -9,7 +9,7 @@ const copy=homeCopyRefs.benefits;
     <div class="smd-home__container">
       <h2 class="mx-auto max-w-3xl whitespace-pre-line text-center font-heading text-3xl font-semibold md:text-5xl"><HomeFigmaText :text-key="copy.title" /></h2>
       <div class="smd-home__benefits-grid">
-        <article v-for="card in copy.cards" :key="card.slot" class="min-w-0">
+        <article v-for="card in copy.cards" :key="card.slot" class="min-w-0 smd-home__benefit-card" :data-benefit-slot="card.slot">
           <HomeMediaFrame :slot-id="card.slot" />
           <div class="smd-home__benefit-body">
             <span class="font-heading text-xl text-accent-400"><HomeFigmaText :text-key="card.numeral" /></span>

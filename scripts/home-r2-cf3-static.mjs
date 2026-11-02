@@ -3,7 +3,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 import { buildSourceFreeze, verifyUntouchedFiles } from './lib/home-r2-source.mjs';
-import { M5_TYPEFIX_AUTHORIZED_DIGESTS } from './lib/home-r2-m5-typefix-authority.mjs';
+import { TEXT_HEADER_AUTHORIZED_DIGESTS } from './lib/home-r2-text-header-authority.mjs';
 import { buildHomeCf3Visual } from './lib/home-r2-cf3-visual.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=name=>readFileSync(resolve(root,name),'utf8');
@@ -14,7 +14,7 @@ assert.equal(visual.textCount,76);
 assert.equal(visual.witness.clipBlockers.direct.length,2);
 assert.equal(visual.witness.clipBlockers.propagatedCount,30);
 for(const [path,wanted] of Object.entries(visual.outputs))assert.equal(read(path),wanted,`derived visual drift ${path}`);
-assert.ok(verifyUntouchedFiles(root,M5_TYPEFIX_AUTHORIZED_DIGESTS)>=21);
+assert.ok(verifyUntouchedFiles(root,TEXT_HEADER_AUTHORIZED_DIGESTS)>=21);
 const css=read('app/assets/css/home-r2.css');
 const index=read('app/pages/index.vue');
 for(const ref of ['--home-hero-max: 1398px','--home-special-max: 1050px','--home-benefits-max: 1050px',
@@ -28,7 +28,10 @@ for(const kind of ['hero','info-bar','special-start','training-track','benefits'
  assert.ok(code.includes(`data-home-section="${kind}"`));
  assert.ok(code.includes(`smd-home--${kind}`));
 }
-assert.match(index,/class="smd-home"/);
+// V-R1 supersession: desktop JSONL scene and tablet/mobile semantic reflow share source authority.
+assert.match(index,/class="smd-home smd-home--figma-scene"/);
+assert.match(index,/class="smd-home smd-home--semantic-reflow"/);
+assert.match(index,/figma-r2-scene\.css/);
 assert.match(index,/home-r2\.css/);
 assert.doesNotMatch(css,/\.container-x\s*\{|max-w-content\s*:/);
 const media=read('app/components/home/HomeMediaFrame.vue');

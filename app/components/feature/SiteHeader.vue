@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useSiteContent } from '~/composables/useSiteContent';
-import { homeFigmaText } from '~/data/home-r2-copy';
+import { HOME_HEADER_BRAND_R1, assertHomeHeaderBrandR1 } from '~/data/home-r2-brand-display';
 import { homeHeaderNavigationV2, assertHomeHeaderNavigationV2, validPublishedKakaoUrl } from '~/data/home-r2-navigation';
-import HeaderBrandSymbol from './HeaderBrandSymbol.vue';
 
 assertHomeHeaderNavigationV2();
+assertHomeHeaderBrandR1();
 const content = useSiteContent();
 const route = useRoute();
 const scrolled = ref(false);
 const open = ref(false);
 const toggle = ref<HTMLButtonElement | null>(null);
 const nav = homeHeaderNavigationV2.items; // Same owner for both desktop and compact navigation.
-const isHome = computed(() => route.path === '/');
+
 const active = (to: string) => route.path === to;
 const ctaHref = computed(() => validPublishedKakaoUrl(content.value?.navigation.kakaoUrl));
-const brand = homeFigmaText['node-1:11'].characters;
+const brand = HOME_HEADER_BRAND_R1.displayText;
 
 let oldBodyOverflow: string | null = null;
 function releaseDrawerLock() {
@@ -51,16 +51,24 @@ onUnmounted(() => {
   window.removeEventListener('keydown', onKeydown);
   releaseDrawerLock();
 });
+const figmaLogoError = ref(false);
 </script>
 <template>
   <header
-    :class="['smd-site-header', { 'smd-site-header--home': isHome, 'smd-site-header--scrolled': scrolled || open }]"
+    :class="['smd-site-header', { 'smd-site-header--scrolled': scrolled || open }]"
     data-header-contract="SMD_HOME_HEADER_NAV_V2"
     data-figma-node="node-1:6"
   >
     <div class="smd-site-header__inner">
-      <NuxtLink to="/" class="smd-site-header__brand" aria-label="SMD 아카데미 홈으로" @click="closeDrawer()">
-        <span class="smd-site-header__symbol"><HeaderBrandSymbol /></span>
+      <NuxtLink to="/" class="smd-site-header__brand" :aria-label="`${brand} 홈으로`" @click="closeDrawer()">
+        <span class="smd-site-header__symbol">
+          <img v-if="!figmaLogoError"
+            src="/figma/smd-academy-header-logo.svg"
+            class="smd-site-header__figma-logo"
+            width="80" height="80" alt="" aria-hidden="true" decoding="async"
+            @error="figmaLogoError = true" />
+          <span v-else class="smd-site-header__logo-error" role="status">로고 오류</span>
+        </span>
         <span class="smd-site-header__brand-label">{{ brand }}</span>
       </NuxtLink>
 

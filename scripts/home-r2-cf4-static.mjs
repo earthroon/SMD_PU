@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { homeHeaderNavigationV2,assertHomeHeaderNavigationV2 } from '../app/data/home-r2-navigation.ts';
 import { resolveHomeScaffoldPath } from '../app/utils/homeR2ScaffoldAdmission.ts';
 import { verifyUntouchedFiles } from './lib/home-r2-source.mjs';
-import { M5_TYPEFIX_AUTHORIZED_DIGESTS } from './lib/home-r2-m5-typefix-authority.mjs';
+import { TEXT_HEADER_AUTHORIZED_DIGESTS } from './lib/home-r2-text-header-authority.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=n=>readFileSync(resolve(root,n),'utf8');
 assertHomeHeaderNavigationV2();
@@ -38,5 +38,5 @@ for(const [slug,title] of [['reviews','수강후기'],['faq','Q&A']]){
  assert.ok(page.includes(title==='Q&A'?'Q&amp;A':title));
  assert.doesNotMatch(page,/<SiteHeader|<SiteFooter|<CmsSlot/);
 }
-assert.ok(verifyUntouchedFiles(root,M5_TYPEFIX_AUTHORIZED_DIGESTS)>=21);
+assert.ok(verifyUntouchedFiles(root,TEXT_HEADER_AUTHORIZED_DIGESTS)>=21);
 console.log('PASS_SMD_HOME_R2_CF4_NAVIGATION_SCAFFOLD_STATIC');

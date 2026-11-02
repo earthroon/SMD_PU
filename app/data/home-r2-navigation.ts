@@ -1,5 +1,6 @@
 /** CF4 Public view contract. CMS NavigationDocumentV1 and Publication V5 remain immutable. */
 import { homeFigmaText } from './home-r2-copy.ts';
+import { assertHomeHeaderBrandR1 } from './home-r2-brand-display.ts';
 import { homeR2Source } from './home-r2-manifest.ts';
 
 export type HeaderItemV2 = Readonly<{
@@ -49,6 +50,7 @@ const expected = [
 ] as const;
 
 export function assertHomeHeaderNavigationV2(): void {
+  assertHomeHeaderBrandR1();
   const nav = homeHeaderNavigationV2;
   const fail = (): never => { throw new Error('SMD_HOME_R2_HEADER_NAV_SCHEMA_INVALID'); };
   if (nav.contract !== 'SMD_HOME_HEADER_NAV_V2' || nav.sourceSnapshotDigest !== homeR2Source.sourceSnapshotDigest || nav.items.length !== expected.length) fail();

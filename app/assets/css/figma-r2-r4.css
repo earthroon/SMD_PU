@@ -1,0 +1,25 @@
+/* SMD Home R2 R4: presentation only. No sourceRect/transformLocal edits. */
+/* CF12 · Main methods title only, not all Figma text or all section headings. */
+.smd-figma-scene-section--methods foreignObject[data-figma-text-instance="node-1:60"]
+.smd-figma-native-text__runs span {
+  font-weight: 600 !important;
+}
+
+/* CF11 · Three method descriptions: 28px upward in the 1920-wide source coordinate space.
+   Card frames, card titles, coordinates and source Text Digests remain untouched.
+   SVG foreignObject transform is in user units and scales with the scene viewBox. */
+.smd-figma-scene-section--methods foreignObject[data-figma-text-instance="node-18:115"],
+.smd-figma-scene-section--methods foreignObject[data-figma-text-instance="node-1:62"],
+.smd-figma-scene-section--methods foreignObject[data-figma-text-instance="node-18:117"] {
+  transform: translateY(-28px);
+  transform-box: fill-box;
+  transform-origin: 0 0;
+}
+
+/* R4B CF15: methods third card title only. Source Text Run remains 500.
+   Native text has inline fontWeight so override must explicitly win cascade.
+   Do not affect first/second card title, body, or semantic mobile reflow. */
+.smd-figma-scene-section--methods foreignObject[data-figma-text-instance="node-18:116"]
+.smd-figma-native-text__runs span {
+  font-weight: 600 !important;
+}

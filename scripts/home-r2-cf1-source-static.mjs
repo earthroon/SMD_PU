@@ -3,13 +3,13 @@ import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import { buildSourceFreeze, verifyUntouchedFiles, manifestOutputPath } from './lib/home-r2-source.mjs';
-import { M5_TYPEFIX_AUTHORIZED_DIGESTS } from './lib/home-r2-m5-typefix-authority.mjs';
+import { TEXT_HEADER_AUTHORIZED_DIGESTS } from './lib/home-r2-text-header-authority.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const frozen=buildSourceFreeze(root);
 for(const [name,expected] of Object.entries(frozen.manifestFiles)) {
   assert.equal(readFileSync(manifestOutputPath(root,name),'utf8'),expected,`derived source drift: ${name}`);
 }
-assert.ok(verifyUntouchedFiles(root,M5_TYPEFIX_AUTHORIZED_DIGESTS)>=21);
+assert.ok(verifyUntouchedFiles(root,TEXT_HEADER_AUTHORIZED_DIGESTS)>=21);
 const receipt=JSON.parse(readFileSync(manifestOutputPath(root,'receipt.json'),'utf8'));
 assert.equal(receipt.sourceStatus,'SOURCE_VALIDATED');
 assert.equal(receipt.nativeTextCount,76);
