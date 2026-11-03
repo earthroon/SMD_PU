@@ -1,9 +1,6 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue';
 import { HOME_INTRO_DESKTOP_MEDIA } from '~/utils/homeIntroTimeline';
-<<<<<<< HEAD
-=======
 import { createHomeWheelSkipGate } from '~/utils/homeWheelSkipGate';
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 import {
   HOME_SPECIAL_REVEAL_COMPLETE_MS,
   HOME_SPECIAL_TIMING,
@@ -25,10 +22,7 @@ export function useHomeSpecialReveal(stageRef: Ref<HTMLElement | null>, introCom
   const starts = ref(0);
   const skips = ref(0);
   const skipReason = ref<string | null>(null);
-<<<<<<< HEAD
-=======
   const wheelSkipGate = createHomeWheelSkipGate();
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
   let media: MediaQueryList | null = null;
   let motionRoot: HTMLElement | null = null;
   let mounted = false;
@@ -260,18 +254,11 @@ export function useHomeSpecialReveal(stageRef: Ref<HTMLElement | null>, introCom
         const silence = now - lastWheelAt;
         lastWheelAt = now;
         extraDownPx += Math.max(0, deltaPx);
-<<<<<<< HEAD
-        const intent = specialSkipIntent({
-          deltaPx, elapsedSinceEntryMs: now - firstWheelAt,
-          silenceSinceLastWheelMs: silence, cumulativeFollowUpDownPx: extraDownPx,
-        });
-=======
         const requestedIntent = specialSkipIntent({
           deltaPx, elapsedSinceEntryMs: now - firstWheelAt,
           silenceSinceLastWheelMs: silence, cumulativeFollowUpDownPx: extraDownPx,
         });
         const intent = wheelSkipGate.observe(now, deltaPx, requestedIntent);
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
         switch (intent) {
           case 'skip-up':
             // Leave this event native after retiring our controller.

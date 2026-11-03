@@ -1,3 +1,4 @@
+:root { --smd-header-height: 80px; }
 /* CF3/CF4: Figma header shell, 1920×1080 reference. Does not alter category body CSS. */
 /* SMD-GLOBAL-HEADER-BRAND-SSOT-R2: SiteHeader container is sole responsive geometry owner for brand symbol. */
 .smd-site-header {
@@ -51,10 +52,10 @@
   letter-spacing: -.008em; color: #2f2f2f; text-decoration: none;
   transition: color 150ms ease;
 }
-.smd-site-header__nav-link:hover, .smd-site-header__nav-link[aria-current=page] {color: #dd5a21;}
+.smd-site-header__nav-link:hover, .smd-site-header__nav-link[aria-current=page] {color: var(--smd-action-orange);}
 .smd-site-header__cta {
   width: 105px; min-width: 105px; height: 45px; display: inline-flex; align-items: center; justify-content: center;
-  border-radius: 3.5px; background: #dd5a21; color: white;
+  border-radius: 3.5px; background: var(--smd-action-orange); color: white;
   font-weight: 400; font-size: 20px; white-space: nowrap; letter-spacing: -.008em;
   text-decoration: none;
 }
@@ -64,15 +65,15 @@
 .smd-site-header__drawer {visibility: hidden; max-height: 0; overflow: hidden;}
 .smd-site-header__drawer-nav {display: flex; flex-direction: column; padding: 10px 24px 24px;}
 .smd-site-header__drawer-link {display: block; padding: 13px 5px; border-bottom: 1px solid #e6e6e6; color: #2f2f2f; font-size: 16px;}
-.smd-site-header__drawer-link[aria-current=page] {color: #dd5a21;}
-.smd-site-header__drawer-cta {display: flex; justify-content: center; margin-top: 20px; padding: 14px 20px; color: white; background: #dd5a21; border-radius: 4px; font-size: 16px;}
+.smd-site-header__drawer-link[aria-current=page] {color: var(--smd-action-orange);}
+.smd-site-header__drawer-cta {display: flex; justify-content: center; margin-top: 20px; padding: 14px 20px; color: white; background: var(--smd-action-orange); border-radius: 4px; font-size: 16px;}
 .smd-site-header__drawer-unavailable {color: #94431c; padding-block: 16px;}
-.smd-site-header a:focus-visible,.smd-site-header button:focus-visible {outline: 3px solid #dd5a21; outline-offset: 3px;}
+.smd-site-header a:focus-visible,.smd-site-header button:focus-visible {outline: 3px solid var(--smd-action-orange); outline-offset: 3px;}
 
 /* SMD_HOME_LAYOUT_R1_HEADER_GRAY_R2: desktop visual geometry is 75% of the 125px Figma header.
    This is the only desktop header-height authority; compact/mobile header remains unchanged. */
 @media (min-width: 1380px) {
-  :root { --smd-desktop-header-height: 93.75px; }
+  :root { --smd-desktop-header-height: 93.75px; --smd-header-height: var(--smd-desktop-header-height); }
   .smd-site-header {
     height: var(--smd-desktop-header-height);
     border-bottom: 0;
@@ -129,3 +130,5 @@
     padding-top: calc(var(--smd-desktop-header-height) + 80px);
   }
 }
+
+@media (max-width: 599px) { :root { --smd-header-height: 76px; } }

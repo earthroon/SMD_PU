@@ -10,7 +10,7 @@ const nav = computed(() => [
 </script>
 
 <template>
-  <footer class="border-t border-background-200 bg-background-100">
+  <footer class="smd-site-footer border-t border-background-200 bg-background-100">
     <div class="container-x py-12 md:py-16">
       <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>

@@ -11,10 +11,7 @@ import {homeInfoLayout} from '~/utils/homeInfoLayout';
 import {specialItemIndex} from '~/utils/homeSpecialTimeline';
 import {trainingItemIndex, isTrainingDiagramNode} from '~/utils/homeTrainingTimeline';
 import {benefitsItemIndex} from '~/utils/homeBenefitsTimeline';
-<<<<<<< HEAD
-=======
 import {isMethodsTitle, methodsCardIndex, methodsTextIndex} from '~/utils/homeMethodsTimeline';
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
 defineOptions({name:'FigmaSceneNode'});
 const props=defineProps<{nodeKey:string;mode?:'full'|'decorative'}>();
 const node=computed(()=>figmaScene.nodes[props.nodeKey]);
@@ -111,8 +108,6 @@ const image=computed(()=>{
         </g>
         <g v-else-if="benefitsItemIndex(child) !== null" class="smd-home-benefits__target"
           :data-benefits-item-index="benefitsItemIndex(child)" :data-benefits-source-node="child">
-<<<<<<< HEAD
-=======
           <FigmaSceneNode :node-key="child" :mode="mode" />
         </g>
         <g v-else-if="isMethodsTitle(child)" class="smd-home-methods__title"
@@ -125,7 +120,6 @@ const image=computed(()=>{
         </g>
         <g v-else-if="methodsTextIndex(child) !== null" class="smd-home-methods__text"
           :data-methods-text-index="methodsTextIndex(child)" :data-methods-text-source="child">
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
           <FigmaSceneNode :node-key="child" :mode="mode" />
         </g>
         <FigmaSceneNode v-else :node-key="child" :mode="mode" />

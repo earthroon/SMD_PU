@@ -66,9 +66,6 @@ useSeoMeta({ title: 'SMD 아카데미 | 인테리어필름 시공 실무 교육'
 <style src="~/assets/css/home-special-reveal.css"></style>
 <style src="~/assets/css/home-training-reveal.css"></style>
 <style src="~/assets/css/home-benefits-reveal.css"></style>
-<<<<<<< HEAD
-=======
 <style src="~/assets/css/home-methods-reveal.css"></style>
 
 <style src="~/assets/css/home-faq.css"></style>
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)

@@ -141,11 +141,7 @@ try{
     await wheel(w,h);await sleep(720);
     const mid=await measure();
     check(errors,mid.phase==='revealing','SKIP_PRECONDITION_NOT_REVEALING');
-<<<<<<< HEAD
-    await wheel(w,h);await sleep(200);
-=======
     await wheel(w,h);await sleep(70);await wheel(w,h);await sleep(200);
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const skipped=await measure();
     check(errors,skipped.phase==='skipped'&&skipped.skips===1,'SKIP_NOT_TERMINAL');
     check(errors,skipped.targets.every(x=>x.opacity>=.999),'SKIP_TARGETS_HIDDEN');
@@ -157,20 +153,12 @@ try{
     results.push({viewport:[w,h],variant:'skip',mid,skipped,replay,errors});
     console.log(`SMD_TRAINING ${w}x${h} SKIP ${errors.length?'FAIL '+errors.join(','):'BROWSER_OK'}`);
   }
-<<<<<<< HEAD
-  { // Special skip down: the one event must land at Training once and arm reveal once.
-=======
   { // Special down-skip confirmed across 50ms lands at Training once and arms reveal once.
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const w=1920,h=1080,errors=[];
     await navigate(w,h,false);
     await wheel(w,h);await sleep(1450);
     await wheel(w,h);await sleep(520);
-<<<<<<< HEAD
-    await wheel(w,h);await sleep(190);
-=======
     await wheel(w,h);await sleep(70);await wheel(w,h);await sleep(190);
->>>>>>> dec113c (feat(home): add FAQ accordion and stabilize scroll animations)
     const handoff=await measure();
     check(errors,handoff.specialPhase==='skipped'&&handoff.specialReason==='WHEEL_DOWN','SPECIAL_NOT_SKIPPED_DOWN');
     check(errors,handoff.starts===1,'TRAINING_DUPLICATE_OR_MISSING_START');

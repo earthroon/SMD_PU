@@ -4,13 +4,15 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build": "node scripts/verify-contract-artifact.mjs && nuxt build",
+    "build": "npm run verify:about && node scripts/verify-contract-artifact.mjs && nuxt build",
     "typecheck": "nuxt typecheck",
     "preview": "nuxt preview",
     "test:source": "node --experimental-strip-types --test scripts/tests/r3-public-boundary.test.mjs",
     "test:boundary": "node --experimental-strip-types --test scripts/tests/r3-public-boundary.test.mjs",
     "verify:contracts": "node scripts/verify-contract-artifact.mjs",
-    "deploy:staging": "npm run build && wrangler deploy --env staging"
+    "deploy:staging": "npm run build && wrangler deploy --env staging",
+    "verify:about": "node --experimental-strip-types scripts/about-r1/verify-source.mjs",
+    "test:about": "node --experimental-strip-types --test scripts/about-r1/tests/*.test.mjs"
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.2",
