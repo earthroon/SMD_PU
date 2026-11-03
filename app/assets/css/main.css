@@ -6,6 +6,11 @@
 
 :root {
   --smd-action-orange: #D95E22;
+  /* Shared PSD-authored surfaces, reused by About and Curriculum. */
+  --smd-brand-navy: #172C57;
+  --smd-surface-panel: #F2F6FF;
+  --smd-surface-alternate: #F2F2F2;
+  --smd-footer-background: #2E2E2E;
   --font-ui: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   --font-heading: var(--font-ui);
   --font-body: var(--font-ui);
@@ -176,6 +181,12 @@
     @apply inline-flex cursor-pointer items-center justify-center gap-1.5 whitespace-nowrap rounded-md border border-foreground-300 px-4 py-2 text-sm font-label text-foreground-950 transition-colors duration-300 hover:border-foreground-950 hover:bg-background-100;
   }
 }
+
+/* One shared Footer surface for the two PSD-backed pages. Other routes keep their surface. */
+.smd-site-shell:is([data-page-skin=about],[data-page-skin=curriculum]) .smd-site-footer { background:var(--smd-footer-background); color:#fff; border-color:rgba(255,255,255,.18); }
+.smd-site-shell:is([data-page-skin=about],[data-page-skin=curriculum]) .smd-site-footer :is(p,li,a,span,div) { color:inherit; }
+.smd-site-shell:is([data-page-skin=about],[data-page-skin=curriculum]) .smd-site-footer :is(.border-t,.btn-ghost) { border-color:rgba(255,255,255,.3); }
+.smd-site-shell:is([data-page-skin=about],[data-page-skin=curriculum]) .smd-site-footer a:hover { color:var(--smd-action-orange); }
 
 /* anti-spam honeypot: legit-looking field, visually removed without obvious utility classes */
 .form-hp-field {

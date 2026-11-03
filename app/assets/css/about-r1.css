@@ -55,11 +55,7 @@
 .smd-about__cta-unavailable-label { font-size:12px; color:#fff; }
 .smd-about__cms-insert { width:100%; }
 
-/* Only this route consumes the PSD footer surface. Existing footer content is reused. */
-.smd-site-shell[data-page-skin=about] .smd-site-footer { background:#2e2e2e; color:#fff; border-color:rgba(255,255,255,.18); }
-.smd-site-shell[data-page-skin=about] .smd-site-footer :is(p,li,a,span,div) { color:inherit; }
-.smd-site-shell[data-page-skin=about] .smd-site-footer :is(.border-t,.btn-ghost) { border-color:rgba(255,255,255,.3); }
-.smd-site-shell[data-page-skin=about] .smd-site-footer a:hover { color:var(--smd-action-orange); }
+/* Footer surface is owned by the shared shell selectors in main.css. */
 
 @media (min-width:700px) and (max-width:1099px) {
   .smd-about__artboard { padding-block:64px; }

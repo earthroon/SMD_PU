@@ -17,8 +17,8 @@ assertAboutR1Source();
 const components = { hero: AboutHero, facts: AboutFacts, audience: AboutAudience,
   'field-experience': AboutFieldExperience, 'learn-by-doing': AboutLearnByDoing,
   'practice-feedback': AboutPracticeFeedback, career: AboutCareer } as const;
-const tokens = { '--about-navy': aboutR1Source.tokens.navy, '--about-panel': aboutR1Source.tokens.panel,
-  '--about-alternate': aboutR1Source.tokens.alternate, '--about-hero': aboutR1Source.tokens.hero,
+const tokens = { '--about-navy': 'var(--smd-brand-navy)', '--about-panel': 'var(--smd-surface-panel)',
+  '--about-alternate': 'var(--smd-surface-alternate)', '--about-hero': aboutR1Source.tokens.hero,
   '--about-hero-opacity': aboutR1Source.tokens.heroOpacity };
 </script>
 <template>
