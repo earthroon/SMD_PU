@@ -1,12 +1,13 @@
-/** One display scale; normalized affine retains the PSD's rotation and crop. */
+import { aboutR1Source } from '../data/about-r1-manifest.ts';
+/** Source-artboard geometry only. Smaller screens use the CSS semantic reflow. */
 export function aboutRenderedWidth(viewportWidth: number): number {
   if (!Number.isFinite(viewportWidth) || viewportWidth <= 0) throw new Error('SMD_ABOUT_VIEWPORT_INVALID');
-  return Math.min(viewportWidth, 1920) * .75;
+  return Math.min(viewportWidth, aboutR1Source.sourceWidth);
 }
 export function aboutWideGeometry(viewportWidth: number, top: number, height: number) {
   if (!Number.isFinite(top) || !Number.isFinite(height) || height <= 0 || top < 124)
     throw new Error('SMD_ABOUT_SECTION_GEOMETRY_INVALID');
-  const scale = aboutRenderedWidth(viewportWidth) / 1920;
+  const scale = aboutRenderedWidth(viewportWidth) / aboutR1Source.sourceWidth;
   return { scale, top: (top - 124) * scale, height: height * scale };
 }
 export function aboutMediaCss(photo: Readonly<{

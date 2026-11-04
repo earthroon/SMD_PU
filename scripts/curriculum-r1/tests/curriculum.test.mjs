@@ -40,8 +40,10 @@ test('invalid image matrices and viewports refuse explicitly',()=>{
   assert.throws(()=>curriculumMediaCss({...p,sourceToFrame}),/MEDIA_GEOMETRY_INVALID/);
  for(const v of [0,-1,NaN,Infinity])assert.throws(()=>curriculumRenderedWidth(v),/VIEWPORT_INVALID/);
 });
-test('Wide width is scaled once and capped at the existing 1920 source',()=>{
- for(const [v,w] of [[1380,1035],[1440,1080],[1920,1440],[2560,1440]])assert.equal(curriculumRenderedWidth(v),w);
+test('reference artboard retains PSD pixels independently of homepage compaction',()=>{
+ for(const [v,w] of [[1380,1380],[1440,1440],[1920,1920],[2560,1920]])assert.equal(curriculumRenderedWidth(v),w);
+ const photo=assets.photos['curriculum.hero.photo'];
+ assert.equal((photo.frame[2]-photo.frame[0])*curriculumRenderedWidth(1920)/source.sourceWidth,590);
 });
 const fixture=()=>{
  const slots={afterTeach:[{id:'a'}],afterLearningPath:[{id:'b'}],beforeCta:[{id:'c'}]};

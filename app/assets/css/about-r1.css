@@ -97,14 +97,14 @@
   .smd-about__cta-description { font-size:14px; }
 }
 
-/* The artboard itself sets layout height; no transform that leaves a second unscaled box. */
-@media (min-width:1380px) and (hover:hover) and (pointer:fine) {
-  .smd-about__artboard { position:relative; container-type:inline-size; width:75%; max-width:1440px; padding:0; aspect-ratio:1920 / var(--section-height); display:block !important; }
+/* PSD layout R2: retain semantic reflow below the source width; display the source at 1:1 above it. */
+@media (min-width:1920px) and (hover:hover) and (pointer:fine) {
+  .smd-about__artboard { position:relative; container-type:inline-size; width:100%; max-width:1920px; padding:0; aspect-ratio:1920 / var(--section-height); display:block !important; }
   .smd-about__hero-content, .smd-about__heading, .smd-about__paragraphs, .smd-about__audience-copy,
   .smd-about__split-copy, .smd-about__media-pair, .smd-about__facts, .smd-about__fact,
   .smd-about__fact-copy, .smd-about__tags, .smd-about__tags li, .smd-about__steps,
   .smd-about__steps li, .smd-about__career-cards, .smd-about__career-cards li, .smd-about__note { display:contents; }
-  .smd-about-section[data-about-section=facts] .smd-about__artboard { max-width:1440px; padding:0; }
+  .smd-about-section[data-about-section=facts] .smd-about__artboard { max-width:1920px; padding:0; }
   .smd-about__text { position:absolute; margin:0; padding:0; left:calc(var(--text-x) / 1920 * 100%); top:calc(var(--text-y) / var(--section-height) * 100%); width:calc(var(--text-width) / 1920 * 100%); max-width:none; white-space:pre; overflow-wrap:normal; font-size:calc(var(--text-size) / 1920 * 100cqw); line-height:var(--text-leading); letter-spacing:var(--text-tracking); }
   .smd-about__media { position:absolute; left:calc(var(--media-x) / 1920 * 100%); top:calc(var(--media-y) / var(--section-height) * 100%); width:calc(var(--media-width) / 1920 * 100%); }
   .smd-about__fact-icon { position:absolute; left:calc(var(--icon-x) / 1920 * 100%); top:calc(var(--icon-y) / var(--section-height) * 100%); width:calc(var(--icon-width) / 1920 * 100%); height:calc(var(--icon-height) / var(--section-height) * 100%); }

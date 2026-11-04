@@ -24,12 +24,13 @@ test('asset corruption is rejected without replacement',()=>{
     assert.throws(()=>verifyAboutAssets(tmp),/ASSET_BYTES_MISMATCH/);
   } finally {rmSync(tmp,{recursive:true,force:true});}
 });
-test('wide height is scaled exactly once and caps at the 1920 source',()=>{
-  assert.equal(aboutRenderedWidth(1920),1440);
-  assert.equal(aboutRenderedWidth(2560),1440);
-  assert.equal(aboutRenderedWidth(1440),1080);
-  assert.deepEqual(aboutWideGeometry(1920,1650,300),{scale:.75,top:1144.5,height:225});
-  assert.equal(aboutWideGeometry(1920,7750,720).top,5719.5);
+test('reference artboard preserves original PSD pixels and caps growth above 1920',()=>{
+  assert.equal(aboutRenderedWidth(1920),1920);
+  assert.equal(aboutRenderedWidth(2560),1920);
+  // This helper describes source coordinates; actual narrower screens use semantic CSS.
+  assert.equal(aboutRenderedWidth(1440),1440);
+  assert.deepEqual(aboutWideGeometry(1920,1650,300),{scale:1,top:1526,height:300});
+  assert.equal(aboutWideGeometry(1920,7750,720).top,7626);
   for(const n of [0,-1,NaN,Infinity])assert.throws(()=>aboutRenderedWidth(n),/VIEWPORT_INVALID/);
 });
 test('rendered CSS maps all original PNG corners to the observed PSD transform, including rotation',()=>{

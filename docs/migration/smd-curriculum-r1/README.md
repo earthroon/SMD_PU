@@ -16,7 +16,10 @@ Observed PSD: 1920×6958, 8-bit sRGB, 145 ungrouped layers; 103 text layers,
 - Header geometry, brand, menus and breakpoints remain in their existing owner.
 - Curriculum uses the existing font and line-height roles. Wide authored text metrics
   remain measured PSD geometry; semantic reflow uses the shared role defaults.
-- Wide body width reuses HOME_WIDE_SOURCE_WIDTH and HOME_WIDE_BODY_SCALE; Header is outside it.
+- PSD Layout R2 replaces the R1 homepage-scale dependency: this page owns a 1920px
+  source artboard displayed at 1:1 for fine-pointer/hover viewports >=1920px.
+  Below 1920px and for coarse pointers, the existing semantic reflow remains active.
+  Header stays outside it and retains its existing geometry and token owners.
 - Original photos retain their bytes, affine transforms, clip frames and radii.
 - source-manifest.json keeps original IDs, order, strings, paint and source identity.
   The proposed Virtual Tree is a separate approved application mapping, not a Photoshop parent tree.

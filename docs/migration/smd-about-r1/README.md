@@ -11,9 +11,12 @@ PSD 정본은 261028_smd_아카데미소개페이지(1).psd이며 SHA-256은
 사진·아이콘의 파일명과 원본 바이트를 유지하며 PSD transform, 회전, 둥근 clip frame을 반영한다.
 Header와 Footer는 기존 default layout의 공통 컴포넌트를 각각 1회 사용한다.
 
-Wide 조건은 1380px 이상, hover:hover, pointer:fine이다. 본문 artboard 폭은
-min(viewportWidth,1920) × 0.75이며 높이는 같은 배율을 한 번 소비한다.
-699px 이하, 700~1099px, 나머지 semantic desktop은 같은 컴포넌트의 CSS reflow를 사용한다.
+SMD-PSD-LAYOUT-R2에서 Wide 조건을 1920px 이상, hover:hover, pointer:fine으로 조정했다.
+본문 artboard 폭은 min(viewportWidth,1920)이며 1920px 기준 원본 크기로 표시한다.
+699px 이하, 700~1099px, 1100~1919px 및 coarse pointer는 기존 같은 컴포넌트의 CSS reflow를 사용한다.
+홈 전용 75% 배율과 공통 Header의 높이·메뉴·색상·서체 토큰은 각 기존 소유자에 유지한다.
+R1에서 도입했던 본문 75% 축소는 R2가 대체한다. 적용 순서는 About R1 → Curriculum R1 → PSD Layout R2이다.
+현재 레이아웃 계약과 검증 범위는 ../smd-psd-layout-r2/README.md를 참조한다.
 
 ## 명세에서 조정한 발행 경계
 

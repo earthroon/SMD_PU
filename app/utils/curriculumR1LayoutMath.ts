@@ -1,14 +1,15 @@
-import { HOME_WIDE_SOURCE_WIDTH, HOME_WIDE_BODY_SCALE } from './homeWideLayoutMath.ts';
 import { curriculumR1Source } from '../data/curriculum-r1-manifest.ts';
 import type { CurriculumSectionId } from '../data/curriculum-r1-types.ts';
+/** Page-authored geometry; the homepage's compaction policy has no consumer here. */
 export const curriculumWideTokens = Object.freeze({
-  '--curriculum-source-width': HOME_WIDE_SOURCE_WIDTH,
-  '--curriculum-wide-width': HOME_WIDE_BODY_SCALE * 100 + '%',
-  '--curriculum-wide-max': HOME_WIDE_SOURCE_WIDTH * HOME_WIDE_BODY_SCALE + 'px',
+  '--curriculum-source-width': curriculumR1Source.sourceWidth,
+  '--curriculum-wide-width': '100%',
+  '--curriculum-wide-max': curriculumR1Source.sourceWidth + 'px',
 });
+/** Source-artboard geometry only. Smaller screens use the CSS semantic reflow. */
 export function curriculumRenderedWidth(viewport: number): number {
   if (!Number.isFinite(viewport) || viewport <= 0) throw new Error('SMD_CURRICULUM_VIEWPORT_INVALID');
-  return Math.min(viewport, HOME_WIDE_SOURCE_WIDTH) * HOME_WIDE_BODY_SCALE;
+  return Math.min(viewport, curriculumR1Source.sourceWidth);
 }
 export function curriculumSection(id: CurriculumSectionId) {
   const section = curriculumR1Source.sections.find(s => s.id === id);
