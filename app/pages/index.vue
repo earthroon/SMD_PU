@@ -1,12 +1,11 @@
 <script setup lang="ts">
+import { useContentMode } from '~/composables/useContentMode';
 import { useSiteContent } from '~/composables/useSiteContent';
 import { assertHomeBodyPlan } from '~/data/home-r2-composition';
 import { examineHomeLegacySlots } from '~/utils/homeR2Admission';
-import HeroSection from '~/components/home/HeroSection.vue';
 import HomeBodyStage from '~/components/home/HomeBodyStage.vue';
 import HomeIntroStage from '~/components/home/HomeIntroStage.vue';
 import {figmaScene} from '~/data/figma-r2-scene.generated';
-import HomeInfoBar from '~/components/home/HomeInfoBar.vue';
 import StatementSection from '~/components/home/StatementSection.vue';
 import TeachSection from '~/components/home/TeachSection.vue';
 import HomeBenefits from '~/components/home/HomeBenefits.vue';
@@ -19,6 +18,7 @@ assertHomeBodyPlan();
 // The second scene arms only after the original Intro finishes normally.
 const introCompleted = ref(false);
 function onIntroCompleted(): void { introCompleted.value = true; }
+const standalone = useContentMode() === 'standalone';
 const content = useSiteContent();
 const legacyAdmission = computed(() => content.value ? examineHomeLegacySlots(content.value.pageSlots.home) : null);
 // Historical CMS inserts are not silently dropped or assigned to arbitrary Figma sections.
@@ -34,15 +34,14 @@ useSeoMeta({ title: 'SMD 아카데미 | 인테리어필름 시공 실무 교육'
 </script>
 <template>
   <!-- Exactly one visible paint owner per breakpoint. Desktop uses JSONL scene; tablet/mobile reflow keeps semantic DOM. -->
-  <template v-if="legacyAdmission?.kind === 'empty'">
+  <template v-if="standalone || legacyAdmission?.kind === 'empty'">
     <div class="smd-home smd-home--figma-scene" data-home-layout-contract="SMD_FIGMA_SCENE_VR1"
       :data-figma-source-digest="figmaScene.sourceSnapshotDigest" data-original-render-qualification="BLOCKED">
-      <HomeIntroStage @completed="onIntroCompleted" />
+      <HomeIntroStage variant="figma" @completed="onIntroCompleted" />
       <HomeBodyStage :intro-completed="introCompleted" />
     </div>
     <div class="smd-home smd-home--semantic-reflow" data-home-layout-contract="SMD_HOME_R2_RESPONSIVE_REFLOW_VR1">
-      <HeroSection />
-      <HomeInfoBar />
+      <HomeIntroStage variant="semantic" />
       <StatementSection />
       <TeachSection />
       <HomeBenefits />
@@ -69,3 +68,5 @@ useSeoMeta({ title: 'SMD 아카데미 | 인테리어필름 시공 실무 교육'
 <style src="~/assets/css/home-methods-reveal.css"></style>
 
 <style src="~/assets/css/home-faq.css"></style>
+
+<style src="~/assets/css/home-hero-film.css"></style>

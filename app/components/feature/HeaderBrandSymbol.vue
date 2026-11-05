@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useContentMode } from '~/composables/useContentMode';
 /** Header icon consumes the V5 publication. /privacy has no page render envelope. */
 import {useSiteContent} from '~/composables/useSiteContent';
 import {resolvePublishedBrandSymbol} from '~/utils/site-media-binding';
@@ -7,7 +8,8 @@ const content=useSiteContent();
 const route=useRoute();
 type PrivacyBrand={schema:'SMD_BRAND_CURRENT_V1';kind:'legacy'|'published-svg';
   assetId?:string;width?:number;height?:number};
-const isPrivacy=computed(()=>route.path==='/privacy');
+const standalone=useContentMode()==='standalone';
+const isPrivacy=computed(()=>!standalone && route.path==='/privacy');
 const {data:privacyBrand,error:privacyFailure,refresh:refreshPrivacyBrand}=await useAsyncData<PrivacyBrand|null>(
   'smd-header-brand-privacy',()=>useRequestFetch()<PrivacyBrand>('/api/brand/current',{cache:'no-store'}),
   {immediate:isPrivacy.value,default:()=>null});
@@ -34,7 +36,7 @@ watch(()=>brandSymbol.value.kind==='published-svg'?brandSymbol.value.assetId:nul
   id=>{if(id!==failedBrandId.value)failedBrandId.value=null;});
 </script>
 <template>
-  <FigmaBrandMark v-if="route.path === '/'" />
+  <FigmaBrandMark v-if="standalone || route.path === '/'" />
   <img v-else-if="brandSymbol.kind==='published-svg' && failedBrandId!==brandSymbol.assetId"
     :src="brandSymbol.src" :width="brandSymbol.width" :height="brandSymbol.height"
     class="block shrink-0 object-contain" alt="" decoding="async"

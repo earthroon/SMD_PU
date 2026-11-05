@@ -19,7 +19,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-  runtimeConfig: { public: { turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '', privacyRevision: process.env.NUXT_PUBLIC_PRIVACY_REVISION || '', siteOrigin: process.env.NUXT_PUBLIC_SITE_ORIGIN || '' } },
+  runtimeConfig: { public: { contentMode: 'standalone', turnstileSiteKey: process.env.NUXT_PUBLIC_TURNSTILE_SITE_KEY || '', privacyRevision: process.env.NUXT_PUBLIC_PRIVACY_REVISION || '', siteOrigin: process.env.NUXT_PUBLIC_SITE_ORIGIN || '' } },
   routeRules: {
     '/api/inquiries': { headers: { 'cache-control': 'no-store' } },
     '/api/bot/**': { headers: { 'cache-control': 'no-store' } }

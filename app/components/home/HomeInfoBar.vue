@@ -19,7 +19,7 @@ if (facts.length!==4 || facts.some(fact=>!fact.icon)) {
 <template>
   <section data-home-section="info-bar" data-figma-node="node-1:134" class="smd-home-section smd-home--info-bar">
     <div class="smd-home__container smd-home__facts">
-      <div v-for="item in facts" :key="item.label" class="smd-home__fact" :data-mobile-fact="item.label">
+      <div v-for="(item,index) in facts" :key="item.label" class="smd-home__fact smd-home-intro__item" :data-intro-icon-index="index" :data-mobile-fact="item.label">
         <HomeMobileInfoIcon :kind="item.icon" />
         <p class="smd-home__fact-label whitespace-pre-line text-sm font-medium text-foreground-700"><HomeFigmaText :text-key="item.label" /></p>
         <p class="smd-home__fact-value mt-2 whitespace-pre-line font-heading text-lg font-semibold text-foreground-950 md:text-xl"><HomeFigmaText :text-key="item.value" /></p>

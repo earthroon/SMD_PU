@@ -13,7 +13,8 @@ const source = relative => readFileSync(resolve(root, relative), 'utf8');
 
 test('CF1 source scene is unchanged and home has exactly one hero/info owner', () => {
   const index = source('app/pages/index.vue');
-  assert.match(index, /<HomeIntroStage\b[^>]*\/>/);
+  assert.match(index, /<HomeIntroStage variant="figma"[^>]*\/>/);
+  assert.match(index, /<HomeIntroStage variant="semantic"[^>]*\/>/);
   assert.match(index, /<HomeBodyStage\b[^>]*\/>/);
   const layout=source('app/utils/homeWideLayout.ts');
   assert.match(layout, /id !== 'hero' && id !== 'info-bar'/);
@@ -22,22 +23,24 @@ test('CF1 source scene is unchanged and home has exactly one hero/info owner', (
   assert.equal((intro.match(/section-id="info-bar"/g)??[]).length, 1);
 });
 
-test('CF1 sticky belongs to hero, never info-bar; viewport slot includes fixed header overlap', () => {
-  const css = source('app/assets/css/home-r2-interaction.css');
-  assert.match(css, /min-height:\s*100svh/);
-  assert.match(css, /position:\s*sticky/);
-  assert.match(css, /\.smd-home-intro\s*>\s*\.smd-figma-scene-section--info-bar\s*\{[^}]*position:\s*relative/s);
-  assert.equal(introTargetScrollY(1390,1080),310);
-  assert.equal(introTargetScrollY(1750,1440),310);
+test('CF1 new vue-overlay is a Vue paint stack, not a scroll/sticky layout', () => {
+  const css=source('app/assets/css/home-r2-interaction.css');
+  const host=source('app/components/home/HomeIntroStage.vue');
+  const controller=source('app/composables/useHomeIntroReveal.ts');
+  assert.match(host,/introRoute='vue-overlay'/);
+  assert.match(host,/data-intro-paint-owner="overlay"/);
+  assert.match(css,/\.smd-home-intro__overlay\s*\{[^}]*position:absolute/s);
+  assert.doesNotMatch(css,/position:sticky|--smd-intro-bar-height/);
+  assert.doesNotMatch(controller,/window\.scrollTo|introTargetScrollY/);
 });
 
-test('CF2 CSS smooth-scroll ownership and wheel capture are localized', () => {
-  const controller = source('app/composables/useHomeIntroReveal.ts');
-  assert.match(controller,/passive:\s*false,\s*capture:\s*true/);
-  assert.match(controller,/setProperty\('scroll-behavior',\s*'auto',\s*'important'\)/);
-  assert.match(controller,/removeEventListener\('wheel', onWheel, true\)/);
-  assert.match(controller,/case 'revealing':\s*case 'settling':/);
-  assert.doesNotMatch(controller,/wheelDeltaBuffer|pendingWheelScroll|replayWheel/);
+test('CF2 wheel belongs to one Vue controller and cannot replay or alter document scroll',()=>{
+  const controller=source('app/composables/useHomeIntroReveal.ts');
+  assert.match(controller,/passive:false/);
+  assert.match(controller,/removeEventListener\('wheel',onWheel,true\)/);
+  assert.match(controller,/case 'revealing':case 'settling':/);
+  assert.match(controller,/lastWheelAt=performance\.now\(\)/);
+  assert.doesNotMatch(controller,/window\.scrollTo|setTimeout\(/);
 });
 
 test('CF3 cubic Bezier is monotonic, bounded and strongly eased out', () => {
@@ -85,10 +88,12 @@ test('CF5 release is gated by animation, settle and the last wheel quiet interva
   assert.equal(canReleaseIntro(2220,220),true);
 });
 
-test('CF6 mobile / tablet and reduced motion admission are disabled in source', () => {
+test('CF6 coarse/mobile and reduced motion remain static, but fine-pointer touch laptops can admit', () => {
   const controller=source('app/composables/useHomeIntroReveal.ts');
-  assert.match(controller,/navigator\.maxTouchPoints\s*>\s*0/);
-  assert.match(source('app/utils/homeIntroTimeline.ts'),/prefers-reduced-motion:\s*no-preference/);
-  assert.match(source('app/assets/css/home-r2-interaction.css'),/min-width:1380px/);
-  assert.match(controller,/window\.scrollY\s*>\s*2/);
+  assert.doesNotMatch(controller,/navigator\.maxTouchPoints\s*>\s*0/);
+  assert.doesNotMatch(controller,/case 'compact-reveal'/);
+  assert.match(controller,/start\(performance\.now\(\),'keyboard'\)/);
+  assert.match(controller,/prefers-reduced-motion: reduce/);
+  assert.match(source('app/assets/css/home-r2-interaction.css'),/smd-home-intro__paint-stack/);
+  assert.match(controller,/window\.scrollY>2/);
 });

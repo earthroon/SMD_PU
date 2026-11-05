@@ -1,11 +1,14 @@
 <script setup lang="ts">
+import HomeHeroFilm from '~/components/home/HomeHeroFilm.vue';
 import FigmaR4UserFileIcon from './FigmaR4UserFileIcon.vue';
 import {figmaScene} from '~/data/figma-r2-scene.generated';
 import {useSiteContent} from '~/composables/useSiteContent';
 import {useHomeR2Published} from '~/composables/useHomeR2Published';
 import FigmaSceneNode from './FigmaSceneNode.vue';
 import { homeInfoLayout } from '~/utils/homeInfoLayout';
-const props=defineProps<{sectionId:string; mode?:'full'|'decorative'}>();
+import type { FilmPaintGeometry } from '~/utils/homeIntroOverlayGeometry';
+const emit = defineEmits<{ 'film-paint-geometry': [geometry: FilmPaintGeometry] }>();
+const props=defineProps<{sectionId:string; mode?:'full'|'decorative'; paintHeightCssPx?:number|null}>();
 const section=computed(()=>figmaScene.sections.find(s=>s.id===props.sectionId));
 const root=computed(()=>section.value?.nodeKey??'');
 const sceneHeight=computed(()=>props.sectionId==='info-bar'?homeInfoLayout.barHeight:section.value?.height??1);
@@ -26,7 +29,10 @@ const nodeRect=(k:string)=>figmaScene.nodes[k]?.rect??[0,0,0,0];
 </script>
 <template>
   <section v-if="section" class="smd-figma-scene-section" :class="`smd-figma-scene-section--${sectionId}`"
-    :data-home-section="sectionId" :data-figma-section="root" :data-scene-mode="mode??'full'">
+    :data-home-section="sectionId" :data-figma-section="root" :data-scene-mode="mode??'full'"
+    :style="sectionId==='hero' && paintHeightCssPx!=null ? {height:`${paintHeightCssPx}px`} : undefined">
+    <HomeHeroFilm v-if="sectionId === 'hero' && mode !== 'decorative'" :paint-height-css-px="paintHeightCssPx"
+      @film-paint-geometry="emit('film-paint-geometry', $event)" />
     <svg xmlns="http://www.w3.org/2000/svg" class="smd-figma-scene-svg" :viewBox="viewBox"
       preserveAspectRatio="xMidYMin meet" role="group" :aria-label="`Figma 원본 ${sectionId} 섹션 시각 레이어`">
       <g :transform="`translate(0 ${-section.top})`">

@@ -1,41 +1,41 @@
-/* SMD_HOME_INTERACTION_R1. Presentation wrappers only. Header and Figma source untouched.
-   The desktop hero begins at document y=0 under the existing fixed Header.
-   A full-viewport hero slot, not viewport minus Header, keeps the info bar below fold. */
-@media (min-width:1380px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
-  .smd-home-intro {
-    position: relative;
-    overflow: visible;
-    isolation: isolate;
-  }
-  .smd-home-intro > .smd-figma-scene-section--hero {
-    min-height: 100svh;
-    position: sticky;
-    top: 0;
-    z-index: 0;
-  }
-  .smd-home-intro > .smd-figma-scene-section--info-bar {
-    position: relative;
-    z-index: 1;
-    opacity: var(--smd-intro-bar-opacity, 1);
-    transform: translate3d(0, var(--smd-intro-bar-y, 0px), 0);
-  }
-  .smd-home-intro .smd-home-intro__item {
-    will-change: opacity, transform;
-  }
-  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="0"] {
-    opacity: var(--smd-intro-icon-0-opacity, 1);
-    transform: translateY(var(--smd-intro-icon-0-y, 0px));
-  }
-  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="1"] {
-    opacity: var(--smd-intro-icon-1-opacity, 1);
-    transform: translateY(var(--smd-intro-icon-1-y, 0px));
-  }
-  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="2"] {
-    opacity: var(--smd-intro-icon-2-opacity, 1);
-    transform: translateY(var(--smd-intro-icon-2-y, 0px));
-  }
-  .smd-home-intro .smd-home-intro__item[data-intro-icon-index="3"] {
-    opacity: var(--smd-intro-icon-3-opacity, 1);
-    transform: translateY(var(--smd-intro-icon-3-y, 0px));
-  }
+/* SMD_HOME_INTRO_VUE_PAINT_STACK_R3: Vue owns geometry and the reveal timeline.
+   CSS owns only paint stacking and the original item presentation primitives. */
+.smd-home-intro { position:relative; }
+/* Vue calculates the actual paint height; svh is SSR-only before viewport measurement. */
+.smd-home-intro__paint-stack { position:relative; isolation:isolate; width:100%;
+ height:calc(100svh - var(--smd-header-height)); }
+
+/* The Base is the entire rolling-film viewport, not the source SVG's 815px box. */
+.smd-home-intro__base { position:relative; width:100%; height:100%; z-index:0; }
+.smd-home-intro__base > .smd-figma-scene-section--hero,
+.smd-home-intro__base > .smd-home--hero { height:100%; min-height:0; }
+
+.smd-home-intro__overlay {
+  position:absolute;
+  z-index:3;
+  pointer-events:none;
+  box-sizing:border-box;
+  opacity:0; /* SSR never displays info ahead of Vue's first admission */
+}
+.smd-home-intro__overlay > .smd-figma-scene-section--info-bar,
+.smd-home-intro__overlay > .smd-home--info-bar { width:100%; }
+.smd-home-intro__item[data-intro-icon-index="0"] {
+  opacity:var(--smd-intro-icon-0-opacity,0);
+  transform:translateY(var(--smd-intro-icon-0-y,24px));
+}
+.smd-home-intro__item[data-intro-icon-index="1"] {
+  opacity:var(--smd-intro-icon-1-opacity,0);
+  transform:translateY(var(--smd-intro-icon-1-y,24px));
+}
+.smd-home-intro__item[data-intro-icon-index="2"] {
+  opacity:var(--smd-intro-icon-2-opacity,0);
+  transform:translateY(var(--smd-intro-icon-2-y,24px));
+}
+.smd-home-intro__item[data-intro-icon-index="3"] {
+  opacity:var(--smd-intro-icon-3-opacity,0);
+  transform:translateY(var(--smd-intro-icon-3-y,24px));
+}
+@media (prefers-reduced-motion: reduce) {
+  .smd-home-intro__overlay[data-intro-overlay-admitted="true"] { opacity:1; transform:none; }
+  .smd-home-intro__item[data-intro-icon-index] { opacity:1; transform:none; }
 }

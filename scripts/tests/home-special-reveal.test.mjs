@@ -21,12 +21,12 @@ test('CF1 handoff from completed Intro is read-only; exactly one special stage',
   const controller = source('app/composables/useHomeSpecialReveal.ts');
   assert.match(index, /@completed="onIntroCompleted"/);
   assert.match(index, /:intro-completed="introCompleted"/);
-  assert.match(intro, /reason === 'completed'/);
+  assert.match(intro, /reason\s*===\s*'completed'/);
   assert.match(intro, /completionEmitted/);
   assert.match(body, /useHomeSpecialReveal\(stage, toRef\(props, 'introCompleted'\)\)/);
   assert.match(controller, /phase\.value !== 'unarmed' \|\| !introCompleted\.value/);
   assert.match(controller, /HOME_INTRO_DESKTOP_MEDIA/);
-  assert.equal((body.match(/<FigmaSceneSection :section-id="row.id"/g) ?? []).length, 1);
+  assert.equal((body.match(/<FigmaSceneSection v-else :section-id="row.id"/g) ?? []).length, 1);
 });
 
 test('CF1 only title and exactly three card groups are motion owners; image remains untouched', () => {

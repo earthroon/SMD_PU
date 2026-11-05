@@ -8,10 +8,8 @@ workers_dev = true
 directory = ".output/public"
 binding = "ASSETS"
 
-[[services]]
-binding = "SMD_CORE"
-service = "smd-core"
-entrypoint = "PublicSurface"
+[vars]
+NUXT_PUBLIC_CONTENT_MODE = "standalone"
 
 [observability]
 enabled = true

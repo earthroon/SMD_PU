@@ -58,7 +58,7 @@ test('CF1 Training terminal results pass a one-shot, reason-specific Benefits ha
   assert.match(body,/useHomeTrainingReveal\(stage, phase, skipReason\)/);
   assert.match(body,/useHomeBenefitsReveal\(stage, trainingPhase, trainingSkipReason\)/);
   assert.match(body,/data-benefits-contract="SMD_HOME_BENEFITS_REVEAL_R1"/);
-  assert.equal((body.match(/<FigmaSceneSection :section-id="row.id"/g)??[]).length,1);
+  assert.equal((body.match(/<FigmaSceneSection v-else :section-id="row.id"/g)??[]).length,1);
 });
 
 test('CF1 SVG motion wrappers own only Benefits leaves, keep source affine and paint', () => {

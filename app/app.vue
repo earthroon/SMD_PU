@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useContentMode } from '~/composables/useContentMode';
 import { useSiteContent } from '~/composables/useSiteContent';
 import { useHomeR2Published } from '~/composables/useHomeR2Published';
 import { useSelectedCategoryPage } from '~/composables/useSelectedCategoryPage';
@@ -8,6 +9,7 @@ import {
 } from '~/utils/homeR2ScaffoldAdmission';
 
 const route = useRoute();
+const standalone = useContentMode() === 'standalone';
 const requestEvent = import.meta.server ? useRequestEvent() : undefined;
 const isStatic = computed(() => route.path === '/privacy');
 const content = useSiteContent();
@@ -22,6 +24,7 @@ const requestKey = computed(() => {
 });
 type RootResult =
   | { mode: 'static'; path: string }
+  | { mode: 'standalone'; path: string }
   | { mode: 'public'; path: string; render: PublicRenderResult }
   | { mode: 'redirect'; path: string; to: string }
   | ScaffoldAdmission;
@@ -31,6 +34,7 @@ const { data, error, pending } = await useAsyncData<RootResult>(requestKey, asyn
   if (path === '/admin' || path.startsWith('/admin/'))
     throw createError({ statusCode: 404, statusMessage: 'PUBLIC_ADMIN_ROUTE_NOT_FOUND' });
   if (path === '/privacy') return { mode: 'static', path };
+  if (standalone) return { mode: 'standalone', path };
 
   const scaffold = resolveHomeScaffoldPath(path);
   // A scaffold never fabricates a selected CMS page: its shared data is the *real* home publication.
@@ -121,6 +125,7 @@ const current = computed(() => {
   if (isStatic.value) return true;
   const r = data.value;
   switch (r?.mode) {
+    case 'standalone': return standalone && r.path === route.path && route.path === '/';
     case 'public':
       return Boolean(content.value && selected.value &&
         r.path === route.path && selected.value.path === route.path &&
@@ -139,8 +144,8 @@ const current = computed(() => {
   <NuxtLayout>
     <NuxtPage v-if="current" />
     <section v-else class="container-x min-h-screen pt-40 pb-20" role="status">
-      <h1 class="font-heading text-2xl">{{ pending ? '콘텐츠를 불러오는 중입니다.' : '콘텐츠를 불러오지 못했습니다.' }}</h1>
-      <p v-if="!pending" class="mt-4 text-foreground-600">{{ error?.statusMessage || '공개 콘텐츠의 발행 상태를 확인해 주세요.' }}</p>
+      <h1 class="font-heading text-2xl">{{ standalone ? '이 페이지는 연결 준비 중입니다.' : pending ? '콘텐츠를 불러오는 중입니다.' : '콘텐츠를 불러오지 못했습니다.' }}</h1>
+      <p v-if="!pending && !standalone" class="mt-4 text-foreground-600">{{ error?.statusMessage || '공개 콘텐츠의 발행 상태를 확인해 주세요.' }}</p>
     </section>
   </NuxtLayout>
 </template>

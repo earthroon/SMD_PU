@@ -26,7 +26,12 @@ test('no public admin pages, BFF or privileged binding',()=>{
   assert.equal(existsSync(resolve(root,'app/pages/admin')),false);
   assert.equal(existsSync(resolve(root,'server/api/admin')),false);
   const wr=read('wrangler.toml');
-  assert.match(wr,/entrypoint = "PublicSurface"/);
+  assert.doesNotMatch(wr,/\[\[services\]\]|SMD_CORE/);
+  assert.match(wr,/NUXT_PUBLIC_CONTENT_MODE = "standalone"/);
+  const cms=read('wrangler.cms.toml');
+  assert.match(cms,/entrypoint = "PublicSurface"/);
+  assert.match(cms,/NUXT_PUBLIC_CONTENT_MODE = "cms"/);
+  assert.doesNotMatch(cms,/AdminSurface/);
   assert.doesNotMatch(wr,/\[\[d1_databases\]\]|\[\[r2_buckets\]\]|AdminSurface/);
   assert.doesNotMatch(read('nuxt.config.ts'),/['"]\/admin(?:\/\*\*)?['"]\s*:/);
 });

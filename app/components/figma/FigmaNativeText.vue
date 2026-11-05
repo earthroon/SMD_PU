@@ -2,6 +2,7 @@
 import {figmaScene} from '~/data/figma-r2-scene.generated';
 import {r3MethodsTextOverride} from '~/data/figma-r2-visual-r3';
 import {homeVisibleBrandText} from '~/utils/homeBrandVisibleText';
+import {homeVisibleFilmText, isHomeFilmCopyNode} from '~/utils/homeFilmCopyPresentation';
 import {isHomeSpecialEmphasisRun, presentHomeSpecialPointRuns} from '~/utils/homeSpecialPointPresentation';
 import {
   deriveFigmaTextPaintWindow, ZERO_FIGMA_TEXT_GROWTH,
@@ -16,7 +17,7 @@ const visibleRuns = computed(() => presentHomeSpecialPointRuns(props.nodeKey,
   (original.value?.runs ?? []).map(run => {
     const sized = visual.value ? {...run,style:{...run.style,
       fontSize:`${visual.value.fontSize}px`,letterSpacing:`${visual.value.letterSpacing}px`}} : run;
-    const displayed = homeVisibleBrandText(props.nodeKey, run.characters);
+    const displayed = homeVisibleFilmText(props.nodeKey, homeVisibleBrandText(props.nodeKey, run.characters));
     return displayed === run.characters ? sized : {...sized, characters: displayed};
   }),
 ));
@@ -124,7 +125,8 @@ onUnmounted(() => {
     :data-user-visual-override="visual ? 'USER_REQUESTED_METHODS_TEXT_SCALE_R3' : undefined"
     :data-display-font-size="visual?.fontSize">
     <div xmlns="http://www.w3.org/1999/xhtml" :style="paintStyle" class="smd-figma-native-text">
-      <div ref="runsRoot" class="smd-figma-native-text__runs"><span v-for="(run,i) in visibleRuns" :key="i"
+      <div ref="runsRoot" class="smd-figma-native-text__runs"
+        :style="isHomeFilmCopyNode(nodeKey) ? { whiteSpace: 'pre' } : undefined"><span v-for="(run,i) in visibleRuns" :key="i"
         :data-utf16-start="run.start" :data-utf16-end="run.end" :style="run.style"
         :data-special-emphasis="isHomeSpecialEmphasisRun(nodeKey, i) ? 'true' : undefined">{{run.characters}}</span></div>
     </div>

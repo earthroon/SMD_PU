@@ -11,7 +11,7 @@ const nav = computed(() => [
 
 <template>
   <footer class="smd-site-footer border-t border-background-200 bg-background-100">
-    <div class="container-x py-12 md:py-16">
+    <div v-if="content" class="container-x py-12 md:py-16">
       <div class="grid grid-cols-1 gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <div class="flex items-center gap-2.5">
@@ -69,5 +69,6 @@ const nav = computed(() => [
         <span>{{ pages?.shared.footer.locationTagline }}</span>
       </div>
     </div>
+    <div v-else class="container-x py-8"><p role="status">연락처 및 외부 채널 연결 준비 중입니다.</p></div>
   </footer>
 </template>

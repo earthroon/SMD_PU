@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import HomeHeroFilm from './HomeHeroFilm.vue';
+import type { FilmPaintGeometry } from '~/utils/homeIntroOverlayGeometry';
+const emit = defineEmits<{ 'film-paint-geometry': [geometry: FilmPaintGeometry] }>();
+const props=defineProps<{paintHeightCssPx?:number|null}>();
 import HomeFigmaText from './HomeFigmaText.vue';
 import { homeCopyRefs } from '~/data/home-r2-composition';
 import { homeFigmaText } from '~/data/home-r2-copy';
+import { HOME_FILM_COPY_LABEL } from '~/utils/homeFilmCopyPresentation';
 const copy=homeCopyRefs.hero;
 
 // MOBILE_R1 is a display-only copy override. The frozen Figma text and digest stay intact.
@@ -12,14 +17,16 @@ if (copy.heading!=='node-35:5' ||
 }
 </script>
 <template>
-  <section data-home-section="hero" data-figma-node="node-1:4" class="smd-home-section smd-home--hero">
+  <section data-home-section="hero" data-figma-node="node-1:4" class="smd-home-section smd-home--hero"
+    :style="props.paintHeightCssPx!=null ? {height:`${props.paintHeightCssPx}px`} : undefined">
+    <HomeHeroFilm :paint-height-css-px="props.paintHeightCssPx" @film-paint-geometry="emit('film-paint-geometry', $event)" />
     <div class="smd-home__container">
       <p class="font-label text-xs font-medium tracking-[0.16em] text-foreground-700"><HomeFigmaText :text-key="copy.eyebrow" /></p>
       <h1 class="smd-home__hero-heading mt-6 max-w-4xl whitespace-pre-line font-heading text-4xl font-semibold leading-tight text-foreground-950 md:text-6xl">
         <span class="smd-home__hero-heading-source"><HomeFigmaText :text-key="copy.heading" /></span>
         <span class="smd-home__hero-heading-mobile" data-mobile-heading="MOBILE_HERO_COPY_R1"
           :data-source-text-digest="frozenHeading.textDigest">
-          <span class="smd-home__hero-mobile-line">업계최초 인테리어 유리필름</span>
+          <span class="smd-home__hero-mobile-line">업계최초 {{ HOME_FILM_COPY_LABEL }}</span>
           <span class="smd-home__hero-mobile-line">실무자 양성 프로그램 운영</span>
         </span>
       </h1>

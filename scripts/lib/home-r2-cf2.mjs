@@ -12,8 +12,21 @@ export function verifyHomeComposition(root){
   const entries=new Map(texts.map(x=>[x.target,x]));
   const index=read(root,'app/pages/index.vue');
   const template=index.slice(index.indexOf('<template>'));
-  assert.equal((template.match(/<Home(?:InfoBar|Benefits|Methods|Location|Faq|ConsultationCta)\b|<(?:HeroSection|StatementSection|TeachSection)\b/g)||[]).join(','),
-    components.map(x=>`<${x}`).join(','),'home composition order');
+  // The semantic Intro paints Hero + Info in one Vue-owned frame. Verify that
+  // pair inside the stage rather than expecting two independent page siblings.
+  const intro=read(root,'app/components/home/HomeIntroStage.vue');
+  const wrapped=/<HomeIntroStage variant="semantic"\s*\/>/.test(template);
+  const bodyComponents=(template.match(/<Home(?:Benefits|Methods|Location|Faq|ConsultationCta)\b|<(?:StatementSection|TeachSection)\b/g)||[]).join(',');
+  assert.equal(bodyComponents,components.slice(2).map(x=>`<${x}`).join(','),'home composition body order');
+  if(wrapped){
+    assert.match(intro,/<HeroSection v-else @film-paint-geometry="onFilmGeometry"\s*\/>/);
+    assert.match(intro,/<HomeInfoBar v-else\s*\/>/);
+    assert.match(intro,/data-intro-paint-owner="base"/);
+    assert.match(intro,/data-intro-paint-owner="overlay"/);
+    assert.doesNotMatch(template,/<HeroSection\s*\/>|<HomeInfoBar\s*\/>/);
+  }else{
+    assert.match(template,/<HeroSection\s*\/>\s*<HomeInfoBar\s*\/>/);
+  }
   assert.doesNotMatch(index,/(?:<SiteHeader|<SiteFooter|<CmsSlot|<ArchiveGallery|<PracticeBlock|<CtaBand)\b/);
   assert.match(index,/assertHomeBodyPlan\(\)/);
   assert.match(index,/examineHomeLegacySlots/);

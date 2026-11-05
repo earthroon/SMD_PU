@@ -1,0 +1,7 @@
+/* Wind stays an image/motion owner inside the source Figma Hero. It must never
+   write, resize, or redefine the Intro Stage's Hero / Info Bar layout geometry. */
+.smd-figma-scene-section--hero, .smd-home--hero { background:#fff; }
+.smd-figma-scene-section--hero:has(> .smd-hero-film) [data-figma-node="node-1:5"] { display:none; }
+.smd-figma-scene-section--hero > .smd-figma-scene-svg { position:relative;z-index:1;pointer-events:none; }
+.smd-home--hero > .smd-home__container { position:relative;z-index:1;pointer-events:none; }
+/* R4: viewport filling is owned by HomeIntroStage Vue, not a 815px media min-height. */

@@ -27,9 +27,9 @@ test('CF4 4 icons + 4 text instances exactly once; original node painter remains
 test('CF5 animation owns wheel no timeout/replay; header navigation is not targeted',()=>{
   const source=read('app/composables/useHomeIntroReveal.ts');
   assert.match(source,/removeWheel\(\)/);
-  assert.match(source,/lastWheelAt = performance\.now\(\)/);
-  assert.match(source,/canReleaseIntro\(elapsed, now - lastWheelAt\)/);
-  assert.match(source,/event\.target\.closest\('\.smd-site-header'\)/);
+  assert.match(source,/lastWheelAt\s*=\s*performance\.now\(\)/);
+  assert.match(source,/canReleaseIntro\(elapsed,now-lastWheelAt\)/);
+  assert.match(source,/event\.target\.closest\('\.smd-site-header,/);
   assert.doesNotMatch(source,/setTimeout\(/);
 });
 

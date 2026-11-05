@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build": "npm run verify:about && npm run verify:curriculum && node scripts/verify-contract-artifact.mjs && nuxt build",
+    "build": "node scripts/film/verify-speed-source.mjs && node scripts/film/bake-motion-lut.mjs --check && node scripts/film/bake-nonlinear-loop.mjs --check && node scripts/film/bake.mjs && npm run verify:about && npm run verify:curriculum && node scripts/verify-contract-artifact.mjs && nuxt build",
     "typecheck": "nuxt typecheck",
     "preview": "nuxt preview",
     "test:source": "node --experimental-strip-types --test scripts/tests/r3-public-boundary.test.mjs",
@@ -14,7 +14,10 @@
     "verify:about": "node --experimental-strip-types scripts/about-r1/verify-source.mjs",
     "test:about": "node --experimental-strip-types --test scripts/about-r1/tests/*.test.mjs",
     "verify:curriculum": "node --experimental-strip-types scripts/curriculum-r1/verify-source.mjs",
-    "test:curriculum": "node --experimental-strip-types --test scripts/curriculum-r1/tests/*.test.mjs"
+    "test:curriculum": "node --experimental-strip-types --test scripts/curriculum-r1/tests/*.test.mjs",
+    "test:hero-film": "node --experimental-strip-types --test scripts/tests/hero-film-*.test.mjs",
+    "verify:hero-film-browser": "node scripts/verify-hero-film-browser.mjs",
+    "verify:film-wind": "node scripts/film/bake-nonlinear-loop.mjs --check"
   },
   "dependencies": {
     "@pinia/nuxt": "^1.0.2",

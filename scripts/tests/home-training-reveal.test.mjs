@@ -30,7 +30,7 @@ test('CF1 Training is the third scene after Special, with no change to Intro own
   assert.match(training, /beginFromSpecialSkip\(\)/);
   assert.match(special, /targetFor\('training-track'\)/);
   assert.match(body, /data-training-contract="SMD_HOME_TRAINING_REVEAL_R1"/);
-  assert.equal((body.match(/<FigmaSceneSection :section-id="row.id"/g)??[]).length,1);
+  assert.equal((body.match(/<FigmaSceneSection v-else :section-id="row.id"/g)??[]).length,1);
 });
 
 test('CF1 exactly 5 motion targets and 14 diagram parts are real distinct Figma nodes', () => {
